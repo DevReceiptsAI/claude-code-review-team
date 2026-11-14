@@ -1,0 +1,107 @@
+{
+  "duration_api_ms": 20642,
+  "stop_reason": "end_turn",
+  "total_cost_usd": 0.0915248,
+  "usage": {
+    "input_tokens": 8,
+    "cache_creation_input_tokens": 14314,
+    "cache_read_input_tokens": 66828,
+    "output_tokens": 2757,
+    "output_tokens_details": {
+      "thinking_tokens": 521
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 14314,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 1662,
+        "cache_read_input_tokens": 19580,
+        "cache_creation_input_tokens": 5370,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 5370
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 8,
+      "outputTokens": 2757,
+      "cacheReadInputTokens": 66828,
+      "cacheCreationInputTokens": 14314,
+      "webSearchRequests": 0,
+      "costUSD": 0.0915248,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 521,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 14314,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [
+    {
+      "tool_name": "Bash",
+      "tool_use_id": "toolu_014AU47TwCC4YMHYwrjpGp6P",
+      "tool_input": {
+        "command": "for f in app/*.py tests/*.py; do echo \"=== $f\"; cat -n $f; done"
+      }
+    }
+  ],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 11,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "FINDING: app/auth.py:5 | Signing key is hardcoded in source, so anyone with the code can forge tokens.\nFINDING: app/auth.py:14 | `find_user` builds SQL with an f-string, which allows SQL injection through `name` (e.g. `' OR '1'='1`).\nFINDING: app/auth.py:21 | The password salt is the username (also line 30). It is predictable and not random per user, so identical passwords share hashes across deployments and precomputed attacks are possible.\nFINDING: app/auth.py:35 | The token is only an HMAC of the user id, with no expiry or nonce. It never changes and can't be revoked.\nFINDING: app/files.py:10 | `export_report` joins the raw `filename` into the path with no `basename` or containment check. `../../x` or an absolute path writes outside the exports directory. `read_report` sanitizes its input and this function does not.\nFINDING: app/inventory.py:10 | Off-by-one: the slice ends at `start + page_size - 1`, so every page returns one item too few. `page < 1` also gives a negative start and wrong results.\nFINDING: app/orders.py:13 | The docstring says \"$100.00 or more\", but the check is `>`, so exactly 10,000 cents gets no discount. It should be `>=`.\nFINDING: app/orders.py:23 | Tax is computed on `subtotal`, but the docstring says it is charged on the discounted amount. Discounted orders are overtaxed. It should be `discounted * TAX_RATE_PERCENT // 100`.\nFINDING: app/orders.py:35 | `dedupe_skus` checks membership in a list, which is O(n²). Use a set alongside the list, or `dict.fromkeys`.\nFINDING: app/orders.py:62 | The return value of `reserve` is ignored, and each `reserve` commits separately. The check at line 58 and the reserve are not atomic, so concurrent orders can oversell. A failure partway through leaves partial reservations and no order, contradicting the \"nothing is reserved\" docstring.\nFINDING: tests/test_orders.py:19 | `test_discount_at_threshold` only prints and asserts nothing. It hides the `>` vs `>=` bug at orders.py:13.\nFINDING: tests/test_orders.py:24 | `order_total` is only tested without a discount. Nothing covers the discount-plus-tax path, so the tax bug at orders.py:23 goes undetected.\nFINDING: tests/test_inventory.py:7 | `len(page) <= 10` passes for the off-by-one bug in `paginate`. It should assert the exact page contents (a full first page of 10 items).\nFINDING: tests/test_inventory.py:18 | The reserve test never checks the remaining stock. It also does not cover an unknown SKU, so it does not verify that `qty` is actually decremented.\nFINDING: tests/test_auth_files.py:17 | The token test only checks determinism and uniqueness. It never checks the value or any verification, and there is no test that rejects a forged token.\nFINDING: tests/test_auth_files.py:12 | There is no SQL-injection test for `find_user`. For example, a name like `x' OR '1'='1` should not return a user.\nFINDING: tests/test_auth_files.py:22 | There is no path-traversal test for `export_report`. Only the happy path with a plain filename is tested.",
+  "ttft_ms": 1504,
+  "type": "result",
+  "duration_ms": 20987,
+  "ttft_stream_ms": 1121,
+  "time_to_request_ms": 269,
+  "first_content_frame_ms": 1121,
+  "queued_turn_count": 0,
+  "result_index": 0
+}

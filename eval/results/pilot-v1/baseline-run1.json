@@ -1,0 +1,107 @@
+{
+  "duration_api_ms": 14271,
+  "stop_reason": "end_turn",
+  "total_cost_usd": 0.0730086,
+  "usage": {
+    "input_tokens": 8,
+    "cache_creation_input_tokens": 12299,
+    "cache_read_input_tokens": 68466,
+    "output_tokens": 1695,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 12299,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 958,
+        "cache_read_input_tokens": 19461,
+        "cache_creation_input_tokens": 3474,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 3474
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 8,
+      "outputTokens": 1695,
+      "cacheReadInputTokens": 68466,
+      "cacheCreationInputTokens": 12299,
+      "webSearchRequests": 0,
+      "costUSD": 0.0730086,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 0,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 12299,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [
+    {
+      "tool_name": "Bash",
+      "tool_use_id": "toolu_01VgGvNwKE1j5f94XTN52ig7",
+      "tool_input": {
+        "command": "cd /private/var/folders/k1/7hcmz16x3yn7znhp73wdvqxw0000gn/T/tmp.DNbLKhKjiP/demo-app; for f in app/*.py conftest.py; do echo \"=== $f\"; cat -n $f; done"
+      }
+    }
+  ],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 8,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "FINDING: app/auth.py:14 | SQL injection: `find_user` builds the query with an f-string from `name`. Use a parameterized query.\nFINDING: app/auth.py:5 | Hardcoded signing secret in source. Load it from the environment or a secret store.\nFINDING: app/auth.py:9 | The password salt is the username (`salt=name` at lines 21 and 30). It is predictable and not unique per user. Use a random per-user salt and store it.\nFINDING: app/auth.py:33 | The token signs only `user_id`. It has no expiry, nonce or audience, so it can be replayed forever.\nFINDING: app/files.py:10 | Path traversal in `export_report`: `filename` is not sanitized, so `../` or an absolute path writes outside the exports directory. `read_report` uses `basename`, but this function does not.\nFINDING: app/orders.py:13 | Off-by-one: the docstring says $100.00 or more gets the discount, but `>` excludes exactly 10,000 cents. Use `>=`.\nFINDING: app/orders.py:23 | Tax is computed on `subtotal`, but the docstring says it is charged on the discounted amount. Use `discounted`.\nFINDING: app/orders.py:59 | `place_order` ignores the return value of `reserve`. The availability check and the reserve are not atomic, and each `reserve` commits on its own. A failure partway through, or a concurrent order, can leave stock partially reserved or oversold. A duplicate SKU in the cart can also pass the check twice but fail on reserve.\nFINDING: app/orders.py:40 | `count_by_status` reads `order[\"status\"]`, but the `orders` table has no `status` column (see `db.py:16`). It raises an error on real rows. It is also O(n·m); a single pass would do.\nFINDING: app/orders.py:33 | `dedupe_skus` uses a list for the membership check, which is O(n²). Use a set alongside the list, or `dict.fromkeys`.\nFINDING: app/orders.py:28 | `format_price` gives wrong output for negative cents (for example -150 gives \"$-2.50\").\nFINDING: app/inventory.py:10 | Off-by-one in `paginate`: the slice ends at `start + page_size - 1`, so each page returns 9 items instead of 10. It also does not handle `page < 1`, which gives a negative start index.\nFINDING: app/inventory.py:23 | `reserve` does a check-then-update without a transaction or an atomic `UPDATE ... WHERE qty >= ?`. This is a race condition. It also commits per call, which breaks the atomicity of `place_order`.\nFINDING: app/db.py:37 | `INSERT OR REPLACE` in `add_item` silently overwrites an existing SKU row. There is no positional column list, so any schema change will break it.",
+  "ttft_ms": 1578,
+  "type": "result",
+  "duration_ms": 14392,
+  "ttft_stream_ms": 1415,
+  "time_to_request_ms": 51,
+  "first_content_frame_ms": 1416,
+  "queued_turn_count": 0,
+  "result_index": 0
+}

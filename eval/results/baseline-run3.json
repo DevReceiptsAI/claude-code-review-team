@@ -1,0 +1,99 @@
+{
+  "duration_api_ms": 12972,
+  "stop_reason": "end_turn",
+  "total_cost_usd": 0.06926790000000001,
+  "usage": {
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 12194,
+    "cache_read_input_tokens": 47099,
+    "output_tokens": 1577,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 12194,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 984,
+        "cache_read_input_tokens": 19308,
+        "cache_creation_input_tokens": 3522,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 3522
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 1577,
+      "cacheReadInputTokens": 47099,
+      "cacheCreationInputTokens": 12194,
+      "webSearchRequests": 0,
+      "costUSD": 0.06926790000000001,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 0,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 12194,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 7,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "FINDING: app/auth.py:5 | Hardcoded signing secret `SECRET_KEY` in source; load it from the environment or a secret store.\nFINDING: app/auth.py:14 | SQL injection in `find_user`, which builds the query with an f-string from `name`; use a parameterized query.\nFINDING: app/auth.py:21 | The password salt is the username, which is predictable and not unique per user; use a random per-user salt.\nFINDING: app/auth.py:30 | `check_login` calls `find_user`, which is injectable, so the login can be bypassed. If the user does not exist it returns early, which makes timing differ.\nFINDING: app/auth.py:35 | `sign_token` signs only `user_id`, with no expiry or nonce, so tokens never expire and cannot be revoked.\nFINDING: app/files.py:10 | Path traversal in `export_report`: `filename` is not sanitized, so `../` or an absolute path writes outside `EXPORT_DIR`. `read_report` uses `basename` and `export_report` does not.\nFINDING: app/orders.py:13 | Off-by-one in `apply_discount`: `>` should be `>=`, because the docstring says $100.00 or more gets the discount.\nFINDING: app/orders.py:23 | Tax is computed on the undiscounted `subtotal`, but the docstring says it is charged on the discounted amount; use `discounted`.\nFINDING: app/orders.py:33 | `dedupe_skus` is O(n²) because it does a membership test on a list; use a set alongside the list.\nFINDING: app/orders.py:42 | `count_by_status` is O(statuses × orders) and ignores any status not in `STATUSES`; do one pass with a counter.\nFINDING: app/orders.py:58 | Race and atomicity problem in `place_order`: stock is checked, then reserved, in separate steps with a commit per `reserve`. Concurrent orders can oversell, and a failure partway leaves stock reserved with no order.\nFINDING: app/orders.py:58 | `place_order` does not validate `qty` (zero or negative), and a negative `qty` would add stock.\nFINDING: app/orders.py:61 | The return value of `reserve` is ignored, so a failed reservation still creates the order.\nFINDING: app/orders.py:58 | A cart with a duplicate SKU passes the per-line stock check on each line but can over-reserve in total.\nFINDING: app/inventory.py:10 | Off-by-one in `paginate`: the slice end `start + page_size - 1` returns `page_size - 1` items; it should be `start + page_size`.\nFINDING: app/inventory.py:9 | `paginate` does not validate `page < 1`, and a negative start index gives wrong slices.\nFINDING: app/db.py:37 | `INSERT OR REPLACE` in `add_item` silently overwrites an existing item, and the column list is not explicit.",
+  "ttft_ms": 1974,
+  "type": "result",
+  "duration_ms": 13501,
+  "ttft_stream_ms": 1806,
+  "time_to_request_ms": 481,
+  "first_content_frame_ms": 1806,
+  "queued_turn_count": 0,
+  "result_index": 0
+}

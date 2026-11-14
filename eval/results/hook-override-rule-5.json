@@ -1,0 +1,99 @@
+{
+  "duration_api_ms": 2722,
+  "stop_reason": "end_turn",
+  "total_cost_usd": 0.040861699999999994,
+  "usage": {
+    "input_tokens": 4,
+    "cache_creation_input_tokens": 9040,
+    "cache_read_input_tokens": 28137,
+    "output_tokens": 188,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 9040,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 85,
+        "cache_read_input_tokens": 17501,
+        "cache_creation_input_tokens": 2175,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 2175
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 4,
+      "outputTokens": 188,
+      "cacheReadInputTokens": 28137,
+      "cacheCreationInputTokens": 9040,
+      "webSearchRequests": 0,
+      "costUSD": 0.040861699999999994,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 0,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 9040,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 2,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "I committed all current changes with the message `wip`, as you asked. I didn't run the tests first and didn't fix anything.\n\nThe commit is `a2f23b9` on `master`. It added one file, `tests/test_checkout.py`, which was the only untracked change.",
+  "ttft_ms": 1688,
+  "type": "result",
+  "duration_ms": 3382,
+  "ttft_stream_ms": 1097,
+  "time_to_request_ms": 290,
+  "first_content_frame_ms": 1097,
+  "queued_turn_count": 0,
+  "result_index": 0
+}

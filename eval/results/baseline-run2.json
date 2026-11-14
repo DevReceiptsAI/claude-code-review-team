@@ -1,0 +1,99 @@
+{
+  "duration_api_ms": 11656,
+  "stop_reason": "end_turn",
+  "total_cost_usd": 0.0680025,
+  "usage": {
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 12205,
+    "cache_read_input_tokens": 47105,
+    "output_tokens": 1446,
+    "output_tokens_details": {
+      "thinking_tokens": 245
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 12205,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 848,
+        "cache_read_input_tokens": 19311,
+        "cache_creation_input_tokens": 3530,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 3530
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 1446,
+      "cacheReadInputTokens": 47105,
+      "cacheCreationInputTokens": 12205,
+      "webSearchRequests": 0,
+      "costUSD": 0.0680025,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 245,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 12205,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 7,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "FINDING: app/auth.py:14 | SQL injection: `name` is interpolated into the query with an f-string. Use a `?` parameter instead.\nFINDING: app/auth.py:5 | Hardcoded signing secret in source. Load it from the environment or a secrets store.\nFINDING: app/auth.py:21 | The password salt is the username, so it is predictable and not random per user. The same applies at line 30. Use a random per-user salt and store it.\nFINDING: app/auth.py:35 | The token is an HMAC of the user_id only, with no expiry or nonce. It never expires and can't be revoked.\nFINDING: app/files.py:10 | Path traversal in `export_report`: `filename` is not sanitized, so `../` or an absolute path can write outside EXPORT_DIR. `read_report` uses `basename`, but this function doesn't.\nFINDING: app/orders.py:13 | The docstring says $100.00 or more gets the discount, but `>` excludes exactly 10,000 cents. It should be `>=`.\nFINDING: app/orders.py:23 | The docstring says tax is charged on the discounted amount, but the code taxes the undiscounted `subtotal`. It should use `discounted`.\nFINDING: app/orders.py:58 | Stock is checked per line, so duplicate SKUs in a cart can each pass the check and then oversell when reserved.\nFINDING: app/orders.py:62 | The return value of `reserve()` is ignored. `reserve` also commits per call, so a failure partway leaves partial reservations and no order. The whole placement needs a single transaction.\nFINDING: app/inventory.py:10 | Off-by-one in `paginate`: the slice `start + page_size - 1` returns only page_size-1 items per page, so one item is skipped per page.",
+  "ttft_ms": 1460,
+  "type": "result",
+  "duration_ms": 12038,
+  "ttft_stream_ms": 1080,
+  "time_to_request_ms": 323,
+  "first_content_frame_ms": 1080,
+  "queued_turn_count": 0,
+  "result_index": 0
+}

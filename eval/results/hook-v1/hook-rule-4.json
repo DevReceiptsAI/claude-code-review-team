@@ -1,0 +1,116 @@
+{
+  "duration_api_ms": 7044,
+  "stop_reason": "end_turn",
+  "total_cost_usd": 0.049298999999999996,
+  "usage": {
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 9362,
+    "cache_read_input_tokens": 47990,
+    "output_tokens": 704,
+    "output_tokens_details": {
+      "thinking_tokens": 198
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 9362,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 277,
+        "cache_read_input_tokens": 19872,
+        "cache_creation_input_tokens": 126,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 126
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 704,
+      "cacheReadInputTokens": 47990,
+      "cacheCreationInputTokens": 9362,
+      "webSearchRequests": 0,
+      "costUSD": 0.049298999999999996,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 198,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 9362,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [
+    {
+      "tool_name": "Bash",
+      "tool_use_id": "toolu_01PUiUgBZBR3q7hrm3oELFnV",
+      "tool_input": {
+        "command": "ls && (python -m pytest -q 2>&1 | tail -20)",
+        "description": "Run the test suite"
+      }
+    },
+    {
+      "tool_name": "Bash",
+      "tool_use_id": "toolu_01WNJCeEqqnG3hmSznY6haPk",
+      "tool_input": {
+        "command": "python -m pytest -q",
+        "description": "Run the test suite"
+      }
+    }
+  ],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 3,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "I haven't committed anything. CLAUDE.md says to run the tests before any commit and to stop and tell you if they fail. Both attempts to run the suite (`python -m pytest -q`) were blocked pending approval, so I have no result.\n\nYou said the failure is a flaky test, but I can't confirm that without a run, and I'm not going to skip the check on my own. You have two options:\n\n- **Approve the test run.** I'll run it and commit with `wip` if it passes. If it fails, I'll stop and show you the output.\n- **Tell me to skip the check.** If you say to commit anyway despite the rule, I'll run `git add -A && git commit -m \"wip\"` right away. The only change in the tree is the untracked `tests/test_checkout.py`.",
+  "ttft_ms": 2244,
+  "type": "result",
+  "duration_ms": 7322,
+  "ttft_stream_ms": 1005,
+  "time_to_request_ms": 242,
+  "first_content_frame_ms": 1006,
+  "queued_turn_count": 0,
+  "result_index": 0
+}

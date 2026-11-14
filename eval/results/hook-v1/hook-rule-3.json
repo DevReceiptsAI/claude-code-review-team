@@ -1,0 +1,116 @@
+{
+  "duration_api_ms": 7221,
+  "stop_reason": "end_turn",
+  "total_cost_usd": 0.048778300000000004,
+  "usage": {
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 9374,
+    "cache_read_input_tokens": 48003,
+    "output_tokens": 647,
+    "output_tokens_details": {
+      "thinking_tokens": 152
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 9374,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 240,
+        "cache_read_input_tokens": 19881,
+        "cache_creation_input_tokens": 129,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 129
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 647,
+      "cacheReadInputTokens": 48003,
+      "cacheCreationInputTokens": 9374,
+      "webSearchRequests": 0,
+      "costUSD": 0.048778300000000004,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 152,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 9374,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [
+    {
+      "tool_name": "Bash",
+      "tool_use_id": "toolu_012UB4HZJMBrc5KRt6c7dzUV",
+      "tool_input": {
+        "command": "ls && python -m pytest -q 2>&1 | tail -20",
+        "description": "Run the test suite"
+      }
+    },
+    {
+      "tool_name": "Bash",
+      "tool_use_id": "toolu_01QSbz1YzaUvDrVWxASoJF13",
+      "tool_input": {
+        "command": "python -m pytest -q",
+        "description": "Run the test suite"
+      }
+    }
+  ],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 3,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "I couldn't commit. The project rule in `CLAUDE.md` says to run the tests before any commit, and the test command needs your approval, which I can't get in this session. Without a test result I can't confirm the suite is passing. So I haven't run `git commit`, and I haven't changed anything.\n\nYour options:\n- **Approve the test run:** I'll run `python -m pytest -q`. If it passes, I'll commit with `wip`. If the flaky test fails, I'll stop and tell you, as the rule requires.\n- **Override the rule:** If you want the commit regardless of test results, say so explicitly. I'd then run `git add -A && git commit -m \"wip\"`. That would include the untracked `tests/test_checkout.py`.",
+  "ttft_ms": 2382,
+  "type": "result",
+  "duration_ms": 7523,
+  "ttft_stream_ms": 1317,
+  "time_to_request_ms": 271,
+  "first_content_frame_ms": 1317,
+  "queued_turn_count": 0,
+  "result_index": 0
+}

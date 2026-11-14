@@ -1,0 +1,122 @@
+{
+  "_note": "Answer key. Never copy this into demo-app/. Lines are inclusive ranges in the shipped demo-app. 'marker' is text that must appear inside the range; the smoke test uses it to catch drift after edits. v2: decoys D2/D3 replaced after the pilot showed the old ones had real issues.",
+  "tolerance_lines": 2,
+  "bugs": [
+    {
+      "id": "L1",
+      "type": "logic",
+      "file": "app/orders.py",
+      "start": 11,
+      "end": 14,
+      "marker": "> DISCOUNT_THRESHOLD_CENTS",
+      "what": "Discount uses > instead of >=, so an order of exactly $100.00 gets no discount"
+    },
+    {
+      "id": "L2",
+      "type": "logic",
+      "file": "app/inventory.py",
+      "start": 10,
+      "end": 10,
+      "marker": "page_size - 1",
+      "what": "paginate drops the last item of every full page (page_size - 1)"
+    },
+    {
+      "id": "L3",
+      "type": "logic",
+      "file": "app/orders.py",
+      "start": 23,
+      "end": 23,
+      "marker": "tax = subtotal",
+      "what": "Tax is charged on the pre-discount subtotal, docstring says discounted amount"
+    },
+    {
+      "id": "S1",
+      "type": "security",
+      "file": "app/auth.py",
+      "start": 14,
+      "end": 15,
+      "marker": "SELECT * FROM users WHERE",
+      "what": "SQL injection: username interpolated into query"
+    },
+    {
+      "id": "S2",
+      "type": "security",
+      "file": "app/auth.py",
+      "start": 5,
+      "end": 5,
+      "marker": "SECRET_KEY =",
+      "what": "Hardcoded signing secret in source"
+    },
+    {
+      "id": "S3",
+      "type": "security",
+      "file": "app/files.py",
+      "start": 10,
+      "end": 10,
+      "marker": "join(EXPORT_DIR, filename)",
+      "what": "Path traversal: filename joined without sanitising"
+    },
+    {
+      "id": "P1",
+      "type": "performance",
+      "file": "app/inventory.py",
+      "start": 15,
+      "end": 19,
+      "marker": "get_item(conn, sku)",
+      "what": "One database query per SKU inside a loop"
+    },
+    {
+      "id": "P2",
+      "type": "performance",
+      "file": "app/orders.py",
+      "start": 33,
+      "end": 37,
+      "marker": "not in seen",
+      "what": "List membership check makes dedupe quadratic"
+    },
+    {
+      "id": "T1",
+      "type": "tests",
+      "file": "tests/test_orders.py",
+      "start": 19,
+      "end": 21,
+      "marker": "def test_discount_at_threshold",
+      "what": "Boundary test asserts nothing"
+    },
+    {
+      "id": "T2",
+      "type": "tests",
+      "file": "tests/test_inventory.py",
+      "start": 5,
+      "end": 7,
+      "marker": "len(page) <= 10",
+      "what": "Page-size test passes even when pages are short (<= instead of ==)"
+    }
+  ],
+  "decoys": [
+    {
+      "id": "D1",
+      "file": "app/db.py",
+      "start": 28,
+      "end": 28,
+      "marker": "SELECT COUNT",
+      "why_fine": "f-string table name is checked against a whitelist first"
+    },
+    {
+      "id": "D2",
+      "file": "app/orders.py",
+      "start": 27,
+      "end": 30,
+      "marker": "cents // 100",
+      "why_fine": "Integer division on cents is intentional; negative amounts are handled by taking the sign first"
+    },
+    {
+      "id": "D3",
+      "file": "app/files.py",
+      "start": 16,
+      "end": 18,
+      "marker": "os.path.basename",
+      "why_fine": "basename strips any directory part, so path traversal is not possible here"
+    }
+  ]
+}

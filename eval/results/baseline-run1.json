@@ -1,0 +1,99 @@
+{
+  "duration_api_ms": 11797,
+  "stop_reason": "end_turn",
+  "total_cost_usd": 0.0682459,
+  "usage": {
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 12234,
+    "cache_read_input_tokens": 47179,
+    "output_tokens": 1458,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 12234,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 865,
+        "cache_read_input_tokens": 19348,
+        "cache_creation_input_tokens": 3522,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 3522
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 1458,
+      "cacheReadInputTokens": 47179,
+      "cacheCreationInputTokens": 12234,
+      "webSearchRequests": 0,
+      "costUSD": 0.0682459,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 0,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 12234,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 7,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "FINDING: app/auth.py:14 | SQL injection: `name` is interpolated into the query with an f-string. Use a parameterized query.\nFINDING: app/auth.py:5 | Hardcoded signing secret in source. Load it from the environment or a secrets store.\nFINDING: app/auth.py:21 | The password salt is the username, so it is predictable and not unique per user. Use a random per-user salt.\nFINDING: app/auth.py:33 | The token is an HMAC of the user_id alone, with no expiry or nonce, so it never expires and can be replayed.\nFINDING: app/files.py:10 | Path traversal in `export_report`: `filename` is not sanitized, so `../` or an absolute path writes outside EXPORT_DIR. `read_report` uses `basename`, but this function doesn't.\nFINDING: app/orders.py:13 | Off-by-one: the docstring says $100.00 or more gets the discount, but `>` excludes exactly 10,000 cents. Use `>=`.\nFINDING: app/orders.py:23 | Tax is computed on the undiscounted `subtotal`. The docstring says it is charged on the discounted amount, so it should use `discounted`.\nFINDING: app/orders.py:61 | `place_order` ignores the return value of `reserve`. Each `reserve` commits on its own, and the checks and reserves are not atomic, so concurrent orders can oversell or leave a partial reservation. Check the result and wrap the whole order in one transaction.\nFINDING: app/inventory.py:10 | Off-by-one in `paginate`: the slice end is `start + page_size - 1`, so each page returns only 9 items and every 10th item is dropped. Use `start + page_size`.\nFINDING: app/inventory.py:23 | `reserve` has a check-then-update race and commits on its own, which breaks the atomicity `place_order` needs. Use a single conditional `UPDATE ... WHERE qty >= ?` and check `rowcount`.\nFINDING: app/db.py:37 | `INSERT OR REPLACE` in `add_item` silently overwrites an existing item, which resets its stock and price. Use an explicit upsert or insert.\nFINDING: app/orders.py:35 | `dedupe_skus` is O(n²) because it does a membership check on a list. Use a set alongside the list, or `dict.fromkeys`.\nFINDING: app/orders.py:42 | `count_by_status` scans all orders once per status. It is also silently wrong for any status not in STATUSES. Use one pass with a `Counter`.",
+  "ttft_ms": 1830,
+  "type": "result",
+  "duration_ms": 12097,
+  "ttft_stream_ms": 1653,
+  "time_to_request_ms": 259,
+  "first_content_frame_ms": 1654,
+  "queued_turn_count": 0,
+  "result_index": 0
+}
