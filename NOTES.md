@@ -77,3 +77,10 @@ Open question for the video: if the checklist-only arm matches the team at a low
 - In the hook arm each run records one "permission denial": that is the hook blocking the commit, not a permission problem.
 - Review eval: with the cleaned decoys, 0 decoys were flagged in 9 runs. All three arms always missed P1 (a query inside a loop). The checklist arm matched the team's 9/10 at less than half the cost.
 - Everything above is one small demo app, written by me, 3 runs per review arm and 5 per hook cell.
+
+## Final video build (14 Nov)
+- Final cut: 6:25, 2560x1440, narration by Kokoro af_heart, sentence-synced animation, receipt hook, results charts from METRICS.md, soft sound effects (a -nosfx version is saved too). The sound effects and the voice were NOT heard by me; check by ear.
+- The first layout pass had text running off cards and off the paper in the receipt, cost labels clipped at the right edge, and captions touching the footer. Why: widths guessed from character counts; fixed by measuring frames and shrinking or shortening.
+- Thumbnails: first versions had the headline under the cards (B), the stamp hiding the command (C) and the headline touching the receipt (A). Fixed and checked at 168 px wide.
+- Length is 6:25, shorter than the 12-16 minute plan. Reason: with the narration trimmed to real content there was nothing to cut in without padding. Padding hurts retention; the "bigger codebase" test is better as Video #2.
+- Before publishing results to GitHub: removed `credential_expires_at`, `session_id` and `uuid` from every results JSON; verified no names, emails or home paths remain.
