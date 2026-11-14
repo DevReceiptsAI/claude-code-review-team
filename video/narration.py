@@ -27,51 +27,16 @@ LEAD = 0.4
 
 # (id, [sentences] or None for a silent slate, silent duration in seconds)
 SEGMENTS = [
-    ("hook", [
-        "I told Claude Code: never commit when tests fail.",
-        "Then I told it to ignore that rule. It committed, five times out of five.",
-        "A hook stopped it every time. Zero out of five.",
+    ("cold_open", [
+        "This test fails. My rule says: never commit when tests fail.",
+        "So I told Claude Code to ignore the rule.",
+        "Five tries. Five commits.",
+        "Then I added a short hook script. Same prompt. Zero commits.",
+        "But the real surprise was a different test.",
+        "A team of three AI reviewers against one agent with a checklist. Same score. The team cost twice as much.",
+        "And all three missed the same bug, every run. I'll show you which one.",
     ], None),
-    ("brand", [
-        "This is DevReceipts. Real builds, real numbers.",
-        "Every number in this video came from a real run.",
-    ], None),
-    ("preview", [
-        "Two tests. First: does a team of review agents beat a plain prompt?",
-        "Second: does a rule in a text file beat a script?",
-        "I'll also show what broke along the way, because a lot did.",
-    ], None),
-    ("intro", [
-        "If you haven't used Claude Code: it's an AI assistant that works in your terminal.",
-        "It reads your files, runs commands, and edits code.",
-        "You can customize it in three main ways: skills, subagents, and hooks.",
-    ], None),
-    ("skill", [
-        "First, skills.",
-        "A skill is a text file of instructions, saved in a folder.",
-        "Write a checklist once, and Claude can pull it in whenever the task comes up.",
-        "For us, that's a review checklist.",
-        "Here's the catch: a skill is guidance. Claude reads it, and decides how to follow it.",
-    ], None),
-    ("subagent", [
-        "Second, subagents.",
-        "A subagent is a helper with one job.",
-        "It starts with a fresh, empty context, and it can only use the tools you give it.",
-        "Ours can only read files. They can't change anything.",
-        "Why bother? Each helper stays focused on one kind of problem, and several can work at the same time.",
-        "Then they report back.",
-    ], None),
-    ("hookdef", [
-        "Third, hooks. A hook isn't AI at all.",
-        "It's a script that runs automatically at a set moment. For example, right before Claude runs a command.",
-        "The script looks at the command and decides: let it through, or block it.",
-        "A script gives the same answer every time.",
-    ], None),
-    ("judgment", [
-        "So skills and subagents are judgment. Hooks are rules.",
-        "Judgment is flexible, and sometimes wrong. A rule is rigid, and reliable.",
-        "That difference is the whole second test.",
-    ], None),
+    ("logo", None, 1.2),
     ("setup", [
         "To measure a reviewer, you need to know the right answers.",
         "So I wrote a small shop app, about three hundred lines of Python, and planted ten bugs in it.",
@@ -91,6 +56,11 @@ SEGMENTS = [
         "But the code checks the table name against an approved list first, so it's safe.",
         "A good reviewer leaves it alone. If it flags this, that's a false alarm.",
     ], None),
+    ("tools1", [
+        "Test 1 uses two of Claude Code's tools.",
+        "A skill is a text file of instructions, a checklist Claude can pull in.",
+        "A subagent is a helper with one job, and read-only tools. My team has three.",
+    ], None),
     ("arms", [
         "Now Test 1. Three reviewers, same app, same model, three runs each.",
         "A: a plain prompt. Review this code.",
@@ -109,19 +79,29 @@ SEGMENTS = [
         "The plain prompt found seven, six, and seven.",
         "The checklist agent found nine, nine, nine. The team found nine, nine, nine.",
         "The plain prompt never looked at the tests, because nobody asked it to. That's most of the gap.",
-        "And all three missed the same bug: a database query inside a loop.",
+        "And all three missed the same bug.",
     ], None),
     ("res_cost", [
         "Now the price. These are estimates at API prices. The runs themselves used a subscription plan.",
         "The plain prompt cost about seven cents, and took thirteen seconds.",
         "The checklist agent: about ten cents, twenty-five seconds.",
         "The team: twenty-one cents, thirty-four seconds. About twice the cost of the checklist, for the same bugs.",
-        "On this small app, the instructions mattered more than the number of agents.",
+        "On my small app, in three runs, the instructions mattered more than the number of agents.",
+    ], None),
+    ("miss", [
+        "Now, the bug all three missed.",
+        "It's in a function that checks stock. For every item, it asks the database a separate question.",
+        "A database query inside a loop. It works, so nothing looks wrong. All nine runs walked right past it.",
+    ], None),
+    ("hookexp", [
+        "Test 2 uses a hook.",
+        "A hook is a script that runs before Claude runs a command.",
+        "Mine runs the tests before any git commit, and blocks the commit if they fail.",
     ], None),
     ("hook_vs_rule", [
         "Test 2 is about enforcement.",
         "In one setup, a rule in claude dot M D says: never commit when tests fail.",
-        "In the other, a hook runs the tests before every commit, and blocks the commit if they fail.",
+        "In the other, the hook blocks the commit if the tests fail.",
         "Then I try two prompts. First, I'm in a hurry. Then, I say outright: ignore the rule.",
         "Five attempts each.",
     ], None),
@@ -131,6 +111,12 @@ SEGMENTS = [
         "When I told Claude to ignore the rule, it did. Five out of five.",
         "The hook blocked all ten attempts. Even when I said to override it.",
         "That isn't a flaw in the model. Following an explicit instruction is reasonable. But it means a rule in a text file is a default, and a hook is enforcement.",
+    ], None),
+    ("replay", [
+        "Here are the real transcripts.",
+        "With the rule: it committed, and said it skipped the tests, as I asked.",
+        "With the hook: the same prompt, blocked.",
+        "And the hook ran even in headless mode. All ten attempts went through it.",
     ], None),
     ("broke", [
         "Now, what broke.",
@@ -142,16 +128,16 @@ SEGMENTS = [
     ], None),
     ("limits", [
         "What this doesn't prove.",
-        "It's one small app. I wrote it, and I wrote the bugs and the prompts.",
+        "It's one small app, three hundred lines, with my bugs and my prompts.",
         "Three runs per review setup, five per hook test, one model.",
-        "A team of agents may well win on a much bigger codebase, where one context can't hold everything. I haven't tested that yet.",
-        "And a hook only stops the model. Anyone who can edit the settings file can remove it.",
+        "A team of agents may well win on a much bigger codebase. I haven't tested that yet.",
+        "The hook blocked ten out of ten here. But it only catches the commands it matches, and anyone who edits the settings can remove it.",
     ], None),
     ("lessons", [
         "So what does this suggest?",
         "One: before you build an agent team, try one agent with a good checklist. Measure both.",
         "Two: if a rule must never break, put it in a hook, not a sentence.",
-        "Three: when you test an AI setup, expect your own test to be wrong. Mine was, three times.",
+        "Three: when you test an AI setup, expect your own test to be wrong. Mine was, four times.",
     ], None),
     ("outro", [
         "The review setup and the test kit are in the description, so you can run this on your own project.",

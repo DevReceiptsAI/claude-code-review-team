@@ -84,3 +84,11 @@ Open question for the video: if the checklist-only arm matches the team at a low
 - Thumbnails: first versions had the headline under the cards (B), the stamp hiding the command (C) and the headline touching the receipt (A). Fixed and checked at 168 px wide.
 - Length is 6:25, shorter than the 12-16 minute plan. Reason: with the narration trimmed to real content there was nothing to cut in without padding. Padding hurts retention; the "bigger codebase" test is better as Video #2.
 - Before publishing results to GitHub: removed `credential_expires_at`, `session_id` and `uuid` from every results JSON; verified no names, emails or home paths remain.
+
+## Re-edit after the Opus review (14 Nov)
+- Independent review (an Opus subagent) said: demand exists but the headline result is the expected one, the 2.5-minute explainer was the biggest retention risk, the visuals read as a slide deck, and the title gave away the outcome. Its demand figures (300-3K views for a new channel) are an unverified estimate.
+- Changes: new cold open built from the saved runs (terminal, 5 stamped receipts, hook gate, score cards, blurred "bug nobody caught" tease), brand card cut to 1 s, explainer replaced by just-in-time skill/subagent and hook explanations right before each test, the missed bug shown as real code, verbatim transcript replays, a search-style title, on-screen caveats ("my 300-line app, 3 runs", "API-price estimates", "it only catches the commands it matches").
+- Fixed a real mismatch: the lessons said the test was wrong "three times" but four test problems were listed. It now says four.
+- Verified from our own data: hooks ran in headless `claude -p` mode in all 10 hook attempts, which contradicts a blog claim that they do not.
+- Replay panel text overlapped its own header twice. Why: I sized the text by guess. Fixed by measuring text height with Manim before rendering (17 pt, wrap 38).
+- Length is now 5:52. Still not heard by me: voice and sound effects.

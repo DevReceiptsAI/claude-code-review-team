@@ -1,11 +1,11 @@
 # Upload package: Video #1 (copy each block into YouTube Studio)
 
-## Title (pick one; the first is the recommended one)
-1. I Told Claude Code to Ignore Its Rule. A Hook Didn't Let It.   (61 characters)
-2. One Agent = My 3-Agent Review Team? I Measured It (Claude Code)
-3. Claude Code Hooks vs CLAUDE.md Rules: What Actually Blocks a Bad Commit?
+## Title (pick one; the first is the recommended one: it matches what people search for)
+1. Claude Code Ignores CLAUDE.md? I Tested Rules vs Hooks   (53 characters)
+2. I Tested Claude Code Subagents. A Checklist Tied Them.
+3. I Told Claude Code to Ignore My Rule. A Hook Didn't Let It.
 
-Thumbnails: A (ignore the rule), B (1 agent = team?), C (hook vs rule), all in `thumbnails/`. Use A with title 1, B with title 2, C with title 3. Do not mix: the title, thumbnail and first 10 seconds must make the same promise. Test one change at a time and give it time before judging.
+Thumbnails: A (ignore the rule), B (1 agent = team?), C (hook vs rule), all in `thumbnails/`. Use A with title 1 or 3, B with title 2, C as the A/B-test challenger (YouTube Studio's Test & Compare). Do not mix: the title, thumbnail and first 10 seconds must make the same promise. Test one change at a time and give it time before judging.
 
 ## Description (paste everything below the line)
 ---
@@ -17,12 +17,12 @@ Code, test kit and raw results: https://github.com/DevReceiptsAI/claude-code-rev
 
 Chapters
 0:00 The result
-0:43 Skills, subagents and hooks in plain words
-1:49 The test app: 10 planted bugs and 3 decoys
-2:40 Test 1: plain prompt vs checklist vs agent team
-4:03 Test 2: CLAUDE.md rule vs hook
-4:48 What broke
-5:53 What it suggests
+0:29 The test app: 10 planted bugs and 3 decoys
+1:20 Test 1: plain prompt vs checklist vs agent team
+2:55 The bug all three missed
+3:10 Test 2: CLAUDE.md rule vs hook
+4:16 What broke
+5:21 What it suggests
 
 Results in one line each
 - Plain prompt: 7, 6, 7 of 10 planted bugs (about $0.07, 13 s per run)
@@ -31,7 +31,7 @@ Results in one line each
 - Rule in CLAUDE.md, told to ignore it: 5 of 5 commits. Hook, told to ignore it: 0 of 5.
 Costs are estimates at API prices; the runs used a subscription plan.
 
-Limits: one small app, written by me; 3 runs per review setup, 5 per hook test, one model. A team of agents may win on a much bigger codebase. I haven't tested that yet. A hook only stops the model, not someone editing the settings file.
+Limits: one small app (300 lines), written by me; 3 runs per review setup, 5 per hook test, one model. A team of agents may win on a much bigger codebase. I haven't tested that yet. The hook blocked 10 of 10 here, but it only catches the commands it matches, and anyone who can edit the settings can remove it. The hook also ran in headless (-p) mode in all 10 attempts.
 
 Docs: Skills https://code.claude.com/docs/en/skills.md | Subagents https://code.claude.com/docs/en/sub-agents.md | Hooks https://code.claude.com/docs/en/hooks.md
 
