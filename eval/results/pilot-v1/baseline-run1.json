@@ -59,7 +59,7 @@
       "tool_name": "Bash",
       "tool_use_id": "toolu_01VgGvNwKE1j5f94XTN52ig7",
       "tool_input": {
-        "command": "cd /private/var/folders/k1/7hcmz16x3yn7znhp73wdvqxw0000gn/T/tmp.DNbLKhKjiP/demo-app; for f in app/*.py conftest.py; do echo \"=== $f\"; cat -n $f; done"
+        "command": "cd /tmp/run/demo-app; for f in app/*.py conftest.py; do echo \"=== $f\"; cat -n $f; done"
       }
     }
   ],

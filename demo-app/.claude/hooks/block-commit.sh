@@ -4,6 +4,10 @@
 # (exit code 2) if the tests fail. Any other command passes straight through.
 # Note: exit code 1 would NOT block, only exit code 2 does.
 
+if ! command -v jq >/dev/null 2>&1; then
+  echo "block-commit.sh needs jq (brew install jq). Blocking so the check is not silently skipped." >&2
+  exit 2
+fi
 input=$(cat)
 cmd=$(printf '%s' "$input" | jq -r '.tool_input.command // empty')
 

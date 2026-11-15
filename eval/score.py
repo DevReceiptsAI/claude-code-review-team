@@ -152,7 +152,8 @@ def main(argv):
             print(
                 f"{arm}: runs={len(arm_rows)} median caught={statistics.median(caught)}/10 "
                 f"(min {min(caught)}, max {max(caught)}), "
-                f"median duration={statistics.median(r['duration_s'] for r in arm_rows)}s"
+                f"median wall-clock={statistics.median(r['wall_s'] if r['wall_s'] is not None else r['duration_s'] for r in arm_rows)}s "
+                f"(CLI duration omits subagent time)"
             )
     print("\nMissed bugs per run:")
     all_ids = [b["id"] for b in key["bugs"]]

@@ -4,7 +4,7 @@ __pycache__/
 .env
 .DS_Store
 demo-app/exports/
-eval/results/*.err
+eval/results/**/*.err
 
 video/models/
 video/media/
@@ -16,3 +16,4 @@ video/out/
 video/*_v2.py
 video/*_v3.py
 video/archive/
+video/*_backup.py

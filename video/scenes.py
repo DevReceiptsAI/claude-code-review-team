@@ -32,9 +32,10 @@ RESULTS = {
 
 HERE = Path(__file__).parent
 TIMINGS = {s["id"]: s for s in json.loads((HERE / "build" / "timings.json").read_text())["segments"]}
-TOTAL = TIMINGS["outro"]["end"] + 0.5
+END_PAD = 7.0   # quiet branded tail so YouTube end-screen elements do not cover speech or cards
+TOTAL = TIMINGS["outro"]["end"] + END_PAD
 
-# Real quotes from the saved runs (first sentences, verbatim). The hook message is the text printed by block-commit.sh.
+# Real quotes from the saved runs (first sentences, verbatim). HOOK_MSG is NOT from the runs: it is the text printed by block-commit.sh.
 RESULTS_DIR = HERE.parent / "eval" / "results"
 
 
@@ -91,7 +92,7 @@ class ArchitectureScene(Scene):
             self.hold_until(TIMINGS[seg_id]["end"] + 0.1)
             if seg_id != "outro":
                 self.clear_stage()
-        self.hold_until(TIMINGS["outro"]["end"] + 0.5)
+        self.hold_until(TIMINGS["outro"]["end"] + END_PAD)
         (HERE / "build" / "sfx.json").write_text(json.dumps(self.sfx_log))
 
     # ---- backdrop, progress bar, chapter label ---------------------------------------
@@ -210,7 +211,7 @@ class ArchitectureScene(Scene):
     def step_setup(self):
         self.at("setup", 0)
         panel = RoundedRectangle(corner_radius=0.18, width=5.6, height=5.8, stroke_color=INDIGO, stroke_width=3,
-                                 fill_color=PANEL, fill_opacity=1).shift(LEFT * 3.6 + UP * 0.1)
+                                 fill_color=PANEL, fill_opacity=1).shift(LEFT * 3.6 + DOWN * 0.3)
         title = Text("app/  (about 300 lines)", font=MONO, font_size=22, color=MUTED).next_to(panel, UP, buff=0.12)
         rows = VGroup(*[
             Rectangle(width=w, height=0.1, stroke_width=0, fill_color=BAR, fill_opacity=1)
@@ -339,7 +340,7 @@ class ArchitectureScene(Scene):
         head = Text("How it's kept fair", font=SANS, font_size=46, weight=BOLD, color=LIGHT).move_to(UP * 3.0)
         self.play(FadeIn(head, shift=DOWN * 0.2), run_time=0.7)
         items = [("same model", GREEN), ("same effort", GREEN), ("same code, fresh copy each run", GREEN),
-                 ("scored by file + line, no AI judge", GREEN), ("unmatched findings: checked by hand", GREEN),
+                 ("scored by file + line, no AI judge", GREEN), ("unmatched findings: listed in the repo", GREEN),
                  ("recorded: bugs caught, real time, est. cost", CYAN)]
         rows = VGroup(*[VGroup(Dot(radius=0.13, color=c), Text(t, font=MONO, font_size=28, color=LIGHT)
                                ).arrange(RIGHT, buff=0.35) for t, c in items])
@@ -389,7 +390,7 @@ class ArchitectureScene(Scene):
         self.play(FadeIn(r3[0]), GrowFromEdge(r3[1], LEFT), run_time=0.9)
         self.play(FadeIn(r3[2]), run_time=0.3)
         self.at("res_bugs", 3)
-        c1 = Text("the plain prompt never looked at the tests", font=MONO, font_size=26, color=YELLOW).move_to(UP * 2.3)
+        c1 = Text("the plain prompt never flagged a test problem", font=MONO, font_size=26, color=YELLOW).move_to(UP * 2.3)
         self.play(FadeIn(c1, shift=UP * 0.15), Indicate(r1[1], color=YELLOW, scale_factor=1.04), run_time=1.0)
         self.at("res_bugs", 4)
         c2 = Text("all three missed the same bug (more soon)", font=MONO, font_size=22, color=MUTED).move_to(np.array([-1.3, -3.1, 0]))
@@ -430,7 +431,7 @@ class ArchitectureScene(Scene):
         call = Text(f"{ratio:.1f}x the checklist's cost, same bugs", font=MONO, font_size=26, color=YELLOW).move_to(DOWN * 2.45)
         self.play(FadeIn(call, shift=UP * 0.15), self.flash(r3[1].get_right(), YELLOW, 0.8), run_time=0.9)
         self.at("res_cost", 4)
-        fin = Text("on my 300-line app, 3 runs: instructions beat agents", font=MONO, font_size=22, color=CYAN).move_to(np.array([-1.0, -3.2, 0]))
+        fin = Text("on my 300-line app, 3 runs: same bugs, under half the cost", font=MONO, font_size=22, color=CYAN).move_to(np.array([-1.0, -3.2, 0]))
         self.play(FadeIn(fin, shift=UP * 0.15), run_time=0.9)
 
     # ---- 16. test 2 setup: rule vs hook --------------------------------------------------------------------------------------------------------------------------
@@ -506,7 +507,7 @@ class ArchitectureScene(Scene):
         self.sfx("pop")
         self.play(self.pop(cells[("hook", "override")]), run_time=0.8)
         self.at("res_hook", 4)
-        t = Text("rule = a default      hook = enforcement", font=MONO, font_size=26, color=CYAN).move_to(np.array([-1.0, -3.2, 0]))
+        t = Text("rule = a default      hook = a check outside the model", font=MONO, font_size=26, color=CYAN).move_to(np.array([-1.0, -3.2, 0]))
         self.play(FadeIn(t, shift=UP * 0.15), run_time=0.9)
 
     # ---- 18. what broke --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -534,10 +535,11 @@ class ArchitectureScene(Scene):
         head = Text("What this doesn't prove", font=SANS, font_size=50, weight=BOLD, color=YELLOW).move_to(UP * 3.0)
         self.play(FadeIn(head, shift=DOWN * 0.2), run_time=0.6)
         items = ["one small app, 300 lines, my bugs, my prompts", "3 runs per review setup, 5 per hook test, one model",
-                 "a team may win on a much bigger codebase", "hook: 10/10 here, but it matches only some commands"]
+                 "a team may win on a much bigger codebase", "hook: 10/10 here, but it matches only some commands",
+                 "a hook stops a silent waiver, not a human who can edit it"]
         for i, t in enumerate(items):
             self.at("limits", i + 1)
-            y = 1.55 - i * 1.2
+            y = 1.75 - i * 1.0
             dot = Dot(radius=0.13, color=YELLOW).move_to([-6.3, y, 0])
             txt = Text(t, font=MONO, font_size=25, color=LIGHT).move_to([-5.95, y, 0], aligned_edge=LEFT)
             self.sfx("pop")
@@ -737,14 +739,14 @@ class ArchitectureScene(Scene):
     # ---- real transcripts, replayed verbatim from the saved run logs ----------------------------------------------------
     def step_replay(self):
         self.at("replay", 0)
-        head = Text("Real transcripts, replayed from the saved logs", font=SANS, font_size=34, weight=BOLD, color=LIGHT).move_to(UP * 3.0)
+        head = Text("Real quotes from the saved logs", font=SANS, font_size=34, weight=BOLD, color=LIGHT).move_to(UP * 3.0)
         pl = RoundedRectangle(corner_radius=0.2, width=6.3, height=4.7, stroke_color=INDIGO, stroke_width=3,
                               fill_color=PANEL, fill_opacity=1).move_to(LEFT * 3.5 + DOWN * 0.45)
         pr = RoundedRectangle(corner_radius=0.2, width=6.3, height=4.7, stroke_color=CYAN, stroke_width=3,
                               fill_color=PANEL, fill_opacity=1).move_to(RIGHT * 3.5 + DOWN * 0.45)
         lt = Text("with the CLAUDE.md rule", font=MONO, font_size=22, weight=BOLD, color=INDIGO).move_to(pl.get_top() + DOWN * 0.4)
         rt = Text("with the hook", font=MONO, font_size=22, weight=BOLD, color=CYAN).move_to(pr.get_top() + DOWN * 0.4)
-        src = Text("verbatim from eval/results/", font=MONO, font_size=18, color=MUTED).move_to(DOWN * 3.2)
+        src = Text("quotes: eval/results/   hook message: block-commit.sh", font=MONO, font_size=18, color=MUTED).move_to(DOWN * 3.1)
         self.play(FadeIn(head, shift=DOWN * 0.2), self.pop(pl), self.pop(pr), FadeIn(lt), FadeIn(rt), FadeIn(src), run_time=0.9)
         self.at("replay", 1)
         txt_l = Text(wrap(QUOTE_RULE, 38), font=MONO, font_size=17, color=LIGHT, line_spacing=0.95)
@@ -761,8 +763,11 @@ class ArchitectureScene(Scene):
         self.sfx("pop")
         self.play(GrowFromCenter(stamp_r), run_time=0.4)
         self.at("replay", 3)
-        cap = Text("hooks ran in headless mode: 10 of 10 attempts", font=MONO, font_size=26, color=CYAN).move_to(np.array([-1.0, -3.6, 0]))
+        cap = Text("hooks ran in headless mode: 10 of 10 attempts", font=MONO, font_size=24, color=CYAN).move_to(np.array([-1.0, -3.5, 0]))
         self.play(FadeIn(cap, shift=UP * 0.15), run_time=0.8)
+        self.at("replay", 4)
+        cap2 = Text("no edit access; it offered to disable the hook", font=MONO, font_size=22, color=YELLOW).move_to(np.array([-2.0, -3.5, 0]))
+        self.play(ReplacementTransform(cap, cap2), run_time=0.8)
 
     # ---- 21. outro ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def step_outro(self):
@@ -776,3 +781,6 @@ class ArchitectureScene(Scene):
         brand = Text("DevReceipts", font=MONO, font_size=56, weight=BOLD, t2c={"Receipts": CYAN}).move_to(DOWN * 2.6)
         self.sfx("pop")
         self.play(Write(brand), run_time=0.9)
+        # quiet tail: clear the cards so YouTube end-screen elements do not cover text
+        self.hold_until(TIMINGS["outro"]["end"] + 1.0)
+        self.play(FadeOut(card), FadeOut(nxt), run_time=0.6)

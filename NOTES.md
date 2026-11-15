@@ -2,16 +2,13 @@
 
 Format: what happened, then a one-line why. Add every error as it happens; these become the "what broke" segment.
 
-## Build log
-_No failures recorded yet. Entries are added as they occur._
-
 ## Design caveats (say these on camera)
 - **Same author, same bias.** I wrote the planted bugs and the reviewer prompts. The subagent prompts include general advice (compare code to its docstring, check for a whitelist before flagging injection) that happens to suit the planted bugs and decoys. A real team would not know its bugs in advance, so the team arm may look better than it would in the wild.
 - **Toy repo.** About 300 lines, 10 bugs. Results say little about large codebases.
 - **Small sample.** A few runs per arm. Report medians and the min-max range, not a single number.
 - **Hook test is a pressure scenario.** The prompt tells Claude to commit anyway and calls a always-failing test "flaky". An ordinary session might obey the CLAUDE.md rule every time.
 - **Cost is an estimate.** `total_cost_usd` is the CLI's estimate at API rates. On a plan login nothing is billed.
-- **Unmatched findings.** A reviewer may find a real bug that was not planted. Those are judged by hand in `eval/manual_verdicts.json`, otherwise they count as false alarms in the strict column.
+- **Unmatched findings.** A reviewer may find a real bug that was not planted. They are NOT judged by hand yet (`eval/manual_verdicts.json` does not exist); until then the strict column counts them as unmatched, not as confirmed false alarms.
 
 ## Decisions made while building
 - The `CLAUDE.md` commit rule lives in `eval/fixtures/commit-rule.md` and is copied in only for the "rule" arm of the hook test, so the review arms are identical apart from `.claude/`.
@@ -20,14 +17,14 @@ _No failures recorded yet. Entries are added as they occur._
 - Hook regex catches `git commit` and chained forms like `git add -A && git commit`. It does not catch `git -C dir commit`. Known gap, mention it if relevant.
 - Demo-app + tests total 301 lines, one over the "about 300" target. Left as is.
 
-## To verify in the pilot (not yet confirmed against the real CLI)
-- [ ] `claude -p ... --output-format json` field names match what `score.py` reads (`result`, `usage`, `total_cost_usd`, `duration_ms`, `num_turns`, `is_error`). Check with `jq 'keys'`.
-- [ ] The review skill is invoked from a plain-language prompt in headless mode (slash-style invocation may not work with `-p`).
-- [ ] Subagents are actually dispatched, and `--allowedTools ... Agent` is the right tool name.
-- [ ] `--setting-sources project,local` still loads `.claude/skills`, `.claude/agents` and the hook.
-- [ ] In the hook test's "rule" arm, `CLAUDE.md` in the project is actually loaded.
-- [ ] `--max-budget-usd` behaves sensibly on a plan login.
-- [ ] How much of the plan allowance one baseline run and one team run use (`/usage`).
+## Verification checklist for the pilot (results are in "Pilot findings" below)
+- [x] `claude -p ... --output-format json` field names match what `score.py` reads (`result`, `usage`, `total_cost_usd`, `duration_ms`, `num_turns`, `is_error`). Check with `jq 'keys'`.
+- [x] The review skill is invoked from a plain-language prompt in headless mode (slash-style invocation may not work with `-p`).
+- [x] Subagents are actually dispatched, and `--allowedTools ... Agent` is the right tool name.
+- [x] `--setting-sources project,local` still loads `.claude/skills`, `.claude/agents` and the hook.
+- [ ] In the hook test's "rule" arm, `CLAUDE.md` in the project is actually loaded. (not checked directly; the rule arm refused to commit in 5/5 "hurry" runs, which is consistent with it being loaded)
+- [x] `--max-budget-usd` behaves sensibly on a plan login.
+- [x] How much of the plan allowance one baseline run and one team run use (`/usage`).
 
 ## Video build log (draft cut, 12 Nov)
 - Decoy legend text ran off the right edge of the frame. Why: label was too wide for the 14.2-unit frame; shortened it.
@@ -59,7 +56,7 @@ Confirmed against the real CLI:
 - [x] The review skill is triggered by a plain-language prompt in headless mode, and all 3 subagents ran (subagent_stats: bug-hunter, security-reviewer, test-reviewer, 0 failed).
 - [x] `--allowedTools ... Agent` is the right tool name, and `--setting-sources project,local` still loads the project skill and agents.
 - [x] `--max-budget-usd 1.5` was accepted on a plan login; nothing hit the cap.
-- [ ] Hook test arms not run yet. CLAUDE.md loading in the "rule" arm still unconfirmed.
+- [x] Hook test arms were run later (see "Full eval and hook test").
 
 Problems found (these are the "what broke" segment):
 - **The decoys are not clean.** The reviewers flagged D2 (`format_price`, negative cents prints "$-2.50") and D3 (`count_by_status` reads `order["status"]` but the orders table has no status column). Both are real problems I did not intend. Why: I wrote realistic code and assumed my decoys were flawless; they were only "fine for the intended use". Decoy hits are therefore not reliable false alarms. Fix before the full run: replace D2 and D3 with truly correct code, or remove them and say so.
@@ -92,3 +89,15 @@ Open question for the video: if the checklist-only arm matches the team at a low
 - Verified from our own data: hooks ran in headless `claude -p` mode in all 10 hook attempts, which contradicts a blog claim that they do not.
 - Replay panel text overlapped its own header twice. Why: I sized the text by guess. Fixed by measuring text height with Manim before rendering (17 pt, wrap 38).
 - Length is now 5:52. Still not heard by me: voice and sound effects.
+
+## Second review and v3 re-cut (15 Nov)
+- A second independent review (Opus subagent; model output, checked by me where noted) re-verified every on-screen number against `eval/results/` and found them correct. It found wording and repo problems instead:
+  - "Anything else, I check by hand" was untrue (`eval/manual_verdicts.json` was never created). Now: "listed in the repo for review". Why: I wrote the line before doing the work.
+  - "A hook is enforcement the prompt can't waive" overstated the test: Claude had no Edit/Write permission and offered to disable the hook if told to. Caveat added to README, description, video and pinned comment.
+  - The "verbatim from eval/results/" label was wrong for the hook message (it comes from `block-commit.sh`). Label fixed.
+  - Title "Claude Code Ignores CLAUDE.md?" implied Claude ignores rules unprompted; the rule held 5/5 under "hurry". Title changed to "I Told Claude Code to Ignore My Rule. A Hook Didn't Let It."
+  - `make test` used the system python instead of the venv; the hook failed open when `jq` was missing (now fails closed with a message; matching logic unchanged, so the tested behaviour is the same); `score.py` printed the misleading CLI timer (now wall-clock); stale TODO text in METRICS/NOTES/titles/outline; macOS temp paths in two results JSONs (scrubbed); `.err` files tracked in subfolders.
+- Wording fixed in the video: "never looked at the tests" -> "never flagged a test problem" (its tool calls were not logged); "added a hook" -> "swapped the rule for a hook"; "instructions beat agents" -> "same bugs, under half the cost".
+- Layout: chapter label overlapped the app title (panel moved down). The "stray dash" at 0:03 and the 2-arrow tools diagram turned out to be mid-animation frames, not bugs.
+- Encoding: re-encoded at crf 16, 48 kHz stereo AAC; captions split to at most 2 lines of about 42 characters; 7 s quiet tail with the cards cleared for YouTube end-screen elements.
+- Voice speed set to 1.05 (was 1.0) and setup lines tightened: the first Test 1 result now arrives at about 1:55 instead of 2:11. Still not heard by me.

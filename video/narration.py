@@ -4,8 +4,7 @@
 Usage (from video/):  .venv/bin/python narration.py [voice]      default voice: af_heart
 Outputs: build/narration.wav, build/timings.json, build/captions.srt
 
-DRAFT CUT v2: intro, the basics (skill / subagent / hook), the test design. It states NO measured
-result. The results segment is a silent slate until the real runs exist.
+Final cut v2 (5:52). Every number spoken comes from METRICS.md (real runs).
 Each sentence is synthesised separately, so animations can be timed to the exact sentence.
 """
 import json
@@ -20,7 +19,7 @@ HERE = Path(__file__).resolve().parent
 BUILD = HERE / "build"
 BUILD.mkdir(exist_ok=True)
 VOICE = sys.argv[1] if len(sys.argv) > 1 else "af_heart"
-SPEED = 1.0
+SPEED = 1.05
 SENT_GAP = 0.28   # pause between sentences inside a segment
 GAP = 0.7         # silence after each segment (the animation fades out during this)
 LEAD = 0.4
@@ -31,7 +30,7 @@ SEGMENTS = [
         "This test fails. My rule says: never commit when tests fail.",
         "So I told Claude Code to ignore the rule.",
         "Five tries. Five commits.",
-        "Then I added a short hook script. Same prompt. Zero commits.",
+        "Then I swapped the rule for a short hook script. Same prompt. Zero commits.",
         "But the real surprise was a different test.",
         "A team of three AI reviewers against one agent with a checklist. Same score. The team cost twice as much.",
         "And all three missed the same bug, every run. I'll show you which one.",
@@ -39,46 +38,46 @@ SEGMENTS = [
     ("logo", None, 1.2),
     ("setup", [
         "To measure a reviewer, you need to know the right answers.",
-        "So I wrote a small shop app, about three hundred lines of Python, and planted ten bugs in it.",
-        "Three logic bugs. Three security bugs. Two performance bugs. And two weak tests.",
-        "And three decoys, which I'll explain in a second.",
+        "So I wrote a small shop app, about three hundred lines of Python, and planted ten bugs.",
+        "Three logic. Three security. Two performance. Two weak tests.",
+        "Plus three decoys.",
     ], None),
     ("bug", [
-        "Here's one of the logic bugs.",
-        "The discount is for orders of a hundred dollars or more.",
+        "Here's one planted logic bug.",
+        "Orders of a hundred dollars or more get a discount.",
         "But the code checks greater than, not greater than or equal.",
-        "So an order of exactly a hundred dollars gets no discount.",
-        "The tests all pass, because none of them check that exact amount.",
+        "So exactly a hundred dollars gets nothing.",
+        "All tests pass, because none check that amount.",
     ], None),
     ("decoy", [
         "Now a decoy.",
-        "This line builds a database query from a variable. That usually means a security hole.",
-        "But the code checks the table name against an approved list first, so it's safe.",
-        "A good reviewer leaves it alone. If it flags this, that's a false alarm.",
+        "This line builds a query from a variable, which usually means a security hole.",
+        "But the table name is checked against an approved list first, so it's safe.",
+        "Flagging it is a false alarm.",
     ], None),
     ("tools1", [
-        "Test 1 uses two of Claude Code's tools.",
-        "A skill is a text file of instructions, a checklist Claude can pull in.",
-        "A subagent is a helper with one job, and read-only tools. My team has three.",
+        "Test 1 uses two Claude Code tools.",
+        "A skill is a text file of instructions, a checklist.",
+        "A subagent is a helper with one job and read-only tools. My team has three.",
     ], None),
     ("arms", [
-        "Now Test 1. Three reviewers, same app, same model, three runs each.",
+        "Now Test 1. Three reviewers, same app, three runs each.",
         "A: a plain prompt. Review this code.",
-        "B: one agent with the same checklist as the skill, but no subagents.",
+        "B: one agent with the same checklist, no subagents.",
         "C: the full team. The skill, and three subagents.",
-        "B is there for a reason. It tells us whether a team helps, or whether it's just better instructions.",
+        "B tells us whether a team helps, or whether it's just better instructions.",
     ], None),
     ("fair", [
         "To keep it fair: same model, same effort, same code, a fresh copy every run.",
-        "Scoring is automatic. A finding counts if it lands on a planted line.",
-        "Anything else, I check by hand.",
-        "I record bugs caught, real elapsed time, and estimated cost.",
+        "Scoring is automatic, by file and line.",
+        "Anything else is listed in the repo for review.",
+        "I record bugs caught, real time, and estimated cost.",
     ], None),
     ("res_bugs", [
         "Bugs caught, out of ten.",
         "The plain prompt found seven, six, and seven.",
         "The checklist agent found nine, nine, nine. The team found nine, nine, nine.",
-        "The plain prompt never looked at the tests, because nobody asked it to. That's most of the gap.",
+        "The plain prompt never flagged a weak test, because nobody asked it to look. That's most of the gap.",
         "And all three missed the same bug.",
     ], None),
     ("res_cost", [
@@ -86,7 +85,7 @@ SEGMENTS = [
         "The plain prompt cost about seven cents, and took thirteen seconds.",
         "The checklist agent: about ten cents, twenty-five seconds.",
         "The team: twenty-one cents, thirty-four seconds. About twice the cost of the checklist, for the same bugs.",
-        "On my small app, in three runs, the instructions mattered more than the number of agents.",
+        "On my small app, in three runs: same bugs, less than half the cost.",
     ], None),
     ("miss", [
         "Now, the bug all three missed.",
@@ -110,13 +109,14 @@ SEGMENTS = [
         "When I only said I was in a hurry, the rule held. Zero out of five commits.",
         "When I told Claude to ignore the rule, it did. Five out of five.",
         "The hook blocked all ten attempts. Even when I said to override it.",
-        "That isn't a flaw in the model. Following an explicit instruction is reasonable. But it means a rule in a text file is a default, and a hook is enforcement.",
+        "That isn't a flaw in the model. Following an explicit instruction is reasonable. But it means a rule in a text file is a default, and a hook is a check that runs outside the model.",
     ], None),
     ("replay", [
         "Here are the real transcripts.",
         "With the rule: it committed, and said it skipped the tests, as I asked.",
         "With the hook: the same prompt, blocked.",
         "And the hook ran even in headless mode. All ten attempts went through it.",
+        "One more thing. In these runs Claude had no edit access, and it offered to turn the hook off if I said so.",
     ], None),
     ("broke", [
         "Now, what broke.",
@@ -132,6 +132,7 @@ SEGMENTS = [
         "Three runs per review setup, five per hook test, one model.",
         "A team of agents may well win on a much bigger codebase. I haven't tested that yet.",
         "The hook blocked ten out of ten here. But it only catches the commands it matches, and anyone who edits the settings can remove it.",
+        "So a hook turns a quiet waiver into a stop that needs a human decision. It does not stop a human.",
     ], None),
     ("lessons", [
         "So what does this suggest?",
@@ -182,8 +183,21 @@ def main():
         h, m, s = int(x // 3600), int(x % 3600 // 60), x % 60
         return f"{h:02d}:{m:02d}:{s:06.3f}".replace(".", ",")
 
+    # Captions: at most 2 lines of about 42 characters; longer sentences are split into several cues, timed by length.
+    import textwrap
+    cues = []
+    for a, b, text in srt:
+        lines = textwrap.wrap(text, 42)
+        chunks = [lines[i:i + 2] for i in range(0, len(lines), 2)]
+        total = sum(len(c) for c in lines) or 1
+        cur = a
+        for ch in chunks:
+            share = sum(len(x) for x in ch) / total
+            end = min(b, cur + (b - a) * share)
+            cues.append((cur, end, "\n".join(ch)))
+            cur = end
     (BUILD / "captions.srt").write_text(
-        "\n".join(f"{i}\n{ts(a)} --> {ts(b)}\n{s}\n" for i, (a, b, s) in enumerate(srt, 1))
+        "\n".join(f"{i}\n{ts(a)} --> {ts(b)}\n{s}\n" for i, (a, b, s) in enumerate(cues, 1))
     )
     (BUILD / "timings.json").write_text(json.dumps({"voice": VOICE, "total": round(t, 3), "segments": timings}, indent=2))
     print(f"voice={VOICE} total={t:.1f}s ({t/60:.1f} min)")

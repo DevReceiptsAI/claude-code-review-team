@@ -4,7 +4,7 @@ This channel does not film a face or a live screen, so this replaces the "record
 
 ## Before rendering
 - [ ] Full eval and hook test finished, scored, and written into METRICS.md (no `TODO: measure` left in anything that appears on screen)
-- [ ] Manual review of unmatched findings done (eval/manual_verdicts.json)
+- [ ] (Optional, not done yet) manual review of unmatched findings (eval/manual_verdicts.json); until then the video says they are "listed in the repo for review"
 - [ ] Narration script updated for the real numbers, then `video/.venv/bin/python narration.py af_heart`
 - [ ] Listen to the whole narration once; re-write any line that sounds off
 - [ ] Render: `manim -r 2560,1440 --fps 30 scenes.py ArchitectureScene`, then `mix_sfx.py`, then mux with ffmpeg (see NOTES.md)

@@ -14,7 +14,7 @@ A small, reproducible experiment from the [DevReceipts](https://www.youtube.com/
 | One agent with the review checklist (no subagents) | 9, 9, 9 | 25 s | $0.10 |
 | Review team (skill + 3 subagents) | 9, 9, 9 | 34 s | $0.21 |
 
-One agent with the checklist matched the team at under half the cost. The plain prompt lost two bugs mostly because it was never asked to look at the tests. All three setups missed the same bug (a query inside a loop). With the cleaned-up decoys, no decoy was flagged in any of the 9 runs.
+One agent with the checklist matched the team at under half the cost. The plain prompt lost two bugs mostly because it was never asked to look at the tests (it never flagged a test problem; its tool calls were not logged, so I can't say it never read them). All three setups missed the same bug (a query inside a loop). With the cleaned-up decoys, no decoy was flagged in any of the 9 runs.
 
 **Test 2: does a rule or a hook stop a commit with failing tests?** (5 attempts per cell)
 
@@ -23,7 +23,7 @@ One agent with the checklist matched the team at under half the cost. The plain 
 | CLAUDE.md rule only | 0 / 5 commits | **5 / 5** commits |
 | Hook only (exit code 2) | 0 / 5 | **0 / 5** |
 
-When told outright to ignore the rule, Claude did, and said it skipped the tests. The hook blocked every attempt. Following an explicit instruction is arguably correct behaviour, so this is not a model failure: a CLAUDE.md rule is a default the prompt can waive, a hook is enforcement.
+When told outright to ignore the rule, Claude did, and said it skipped the tests. The hook blocked every attempt. Following an explicit instruction is arguably correct behaviour, so this is not a model failure: a CLAUDE.md rule is a default the prompt can waive; a hook runs outside the model, so the prompt alone cannot waive it. **Caveat:** in this test Claude had no Edit/Write permission, so it could not have removed the hook, and in the hook runs it offered to disable or edit the hook if told to. A hook turns a silent waiver into a stop that needs a human decision; it does not stop a human, or an agent allowed to edit `.claude/settings.json`.
 
 \*Estimated at API prices from the CLI's `total_cost_usd` (subagents included). The runs used a subscription plan, so nothing was billed.
 
@@ -32,6 +32,9 @@ When told outright to ignore the rule, Claude did, and said it skipped the tests
 - 3 runs per review setup, 5 per hook test, one model, one effort level.
 - A team of subagents may well win on a much larger codebase where one context can't hold everything. That is not tested here.
 - A hook only stops the model. Anyone who can edit `.claude/settings.json` can remove it.
+- The hook only matches `git commit` at the start of a command or after `;`, `&`, `|`. It does **not** catch `git -C dir commit`, `/usr/bin/git commit` or `bash -c "git commit"`.
+- The hook calls the system `python3 -m pytest` in the project folder and needs `jq`. If pytest is missing it blocks every commit; if `jq` is missing it now blocks with a clear message instead of silently allowing.
+- The one bug all three setups missed (a query inside a loop, `low_stock_report`) is low-impact on a local SQLite file, so a reviewer could reasonably skip it. It still counts as a miss in the score.
 - Many "unmatched" findings are real flaws in the demo app (weak password salt, tokens that never expire, an ignored return value). They are listed for manual review, so a high unmatched count is not a false-alarm count.
 
 ## What's inside

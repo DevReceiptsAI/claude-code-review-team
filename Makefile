@@ -4,9 +4,9 @@ setup:            ## create a venv and install the one pinned dependency
 	python3 -m venv .venv
 	.venv/bin/pip install -r requirements.txt
 
-test:             ## smoke tests + demo-app tests. No model calls, no plan usage.
-	python3 -m pytest -q tests
-	cd demo-app && python3 -m pytest -q
+test: setup       ## smoke tests + demo-app tests (creates .venv first). No model calls, no plan usage.
+	.venv/bin/python -m pytest -q tests
+	cd demo-app && ../.venv/bin/python -m pytest -q
 
 pilot:            ## 1 baseline + 1 team run on your plan login. Check /usage before and after.
 	eval/run_eval.sh pilot
