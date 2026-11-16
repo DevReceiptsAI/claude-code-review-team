@@ -53,7 +53,7 @@ Add to "Agents: Real Builds".
 
 ## Settings checklist
 - [ ] AI-voice disclosure answered honestly in Studio (check YouTube's current guidance; a plain synthetic narrator over truthful on-screen content is generally described as not needing the realistic-content label, but verify)
-- [ ] Captions: upload `DevReceipts-Video1-FINAL-v5.srt` as normal captions (do not burn in)
+- [ ] Captions: upload `DevReceipts-Video1-FINAL-v6.srt` as normal captions (do not burn in)
 - [ ] Video watermark: set to the entire video
 - [ ] End screen (last 5-20 seconds): add the playlist and a subscribe element. The outro already leaves room
 - [ ] Visibility: schedule or publish when you can answer comments in the first hours
