@@ -1,17 +1,18 @@
 # Upload package: Video #1 (copy each block into YouTube Studio)
 
 ## Title (recommended: 1; it is literally what happened and matches thumbnail A)
-1. I Told Claude Code to Ignore My Rule. A Hook Didn't Let It.
-2. I Tested Claude Code Subagents. A Checklist Tied Them.
-3. Claude Code Hooks vs CLAUDE.md: What Really Blocks a Bad Commit?
+1. I Told Claude Code to Ignore My Rule. A Hook Didn't Let It.   (main)
+2. AI Coding Rules Can Be Ignored. Here's What Actually Works   (wider-audience alternative; true: the rule gave way when told to be ignored)
+3. Stop AI From Committing Broken Code (I Tested It 20 Times)   (benefit-first alternative; 20 = the hook-test attempts)
+4. I Tested Claude Code Subagents. A Checklist Tied Them.   (pair with thumbnail B; Test 1 angle)
 
-Thumbnails: A (ignore the rule), B (1 agent = team?), C (hook vs rule), all in `thumbnails/`. Use A with title 1, B with title 2, C as the A/B-test challenger (YouTube Studio's Test & Compare). Do not mix: the title, thumbnail and first 10 seconds must make the same promise. Test one change at a time and give it time before judging.
+Thumbnails (in `thumbnails/`): A "ignore the rule" (main, matches title 1), D "AI commits broken code" (broader, matches titles 2 and 3), B "1 agent = team?" (title 4), C "hook vs rule" (search-style). Start with A + title 1. In Studio use Test & compare on thumbnails (A vs D); change one thing at a time and wait for enough impressions before judging. A title swap after the first days is allowed but changes what you are measuring. Never let the title and thumbnail make different promises, and never promise more than METRICS.md shows.
 
 ## Description (paste everything below the line)
 ---
-I told Claude Code never to commit when tests fail. Then I told it to ignore that rule. Rule only: 5 of 5 commits went through. Hook instead of the rule: 0 of 5. I also measured whether a team of 3 review agents beats one agent with a checklist.
+Can you trust an AI coding assistant to follow your rules? I told Claude Code never to commit when tests fail, then told it to ignore that rule. With a rule in CLAUDE.md: 5 of 5 commits went through. With a hook script instead: 0 of 5. I also tested whether a team of 3 AI code-review agents beats one agent with a checklist (same bugs found, 2.2x the cost).
 
-Every number on screen came from a real run. Narrated with an AI voice.
+I tested Claude Code only. The same split (a rule in a prompt vs a check that runs outside the model) should apply to other AI coding agents, but I haven't tested that. Every number on screen came from a real run. Narrated with an AI voice.
 
 Copy-paste starter kit (hook + review checklist + 5-minute test recipe), code and raw results: https://github.com/DevReceiptsAI/claude-code-review-team
 
@@ -22,6 +23,7 @@ Chapters
 2:26 The bug all three missed
 2:40 Test 2: CLAUDE.md rule vs hook
 4:03 What broke
+4:38 What this doesn't prove
 5:06 Copy this: the starter kit
 
 Results in one line each
@@ -37,11 +39,11 @@ Docs: Skills https://code.claude.com/docs/en/skills | Subagents https://code.cla
 
 DevReceipts: real builds, real numbers.
 
-#ClaudeCode #AIAgents #Subagents
+#ClaudeCode #AICoding #AIAgents
 ---
 
 ## Tags (Studio, "More options")
-claude code, claude code hooks, claude code subagents, claude code skills, claude.md, ai agents, ai coding, agent evals, llm evaluation, code review ai
+ai coding assistant, claude code, claude code tutorial, claude code hooks, claude.md, claude code subagents, ai code review, ai agents, ai coding, agent evals
 
 ## Pinned comment (post it right after publishing)
 Everything is reproducible: the repo has the demo app, the answer key, the scripts and the raw results. Biggest caveat: one small app and a few runs per setup. Next video: does a team of agents win on a much bigger (5,000-line) codebase? What else should I test: a different model, or something else? Fair criticism up front: the rule only gave way when I told it to, and the bug all three missed is low-impact on a local database.

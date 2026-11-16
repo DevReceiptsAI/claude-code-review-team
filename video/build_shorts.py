@@ -52,7 +52,7 @@ for name, seg, i0, i1, hook, small in CLIPS:
                                     f"x=(w-text_w)/2:y={y}")
     h1, h2 = hook.split("|")
     vf = (f"[0:v]scale=1080:-2[v];color=c=0x0f172a:s=1080x1920:d={t1 - t0:.2f}[bg];[bg][v]overlay=0:(H-h)/2-60[m];"
-          f"[m]{dt(h1, 84, 'white', 230)},{dt(h2, 84, 'white', 330)},{dt(small, 44, '0x22d3ee', 480)},"
+          f"[m]{dt(h1, 84, 'white', 230)},{dt(h2, 84, '0xfacc15', 330)},{dt(small, 44, '0x22d3ee', 480)},"
           f"{dt('DevReceipts', 40, '0x94a3b8', 1800)},{','.join(caps)}[out]")
     cmd = ["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{t0:.3f}", "-t", f"{t1 - t0:.3f}", "-i", str(SRC),
            "-filter_complex", vf, "-map", "[out]", "-map", "0:a", "-c:v", "libx264", "-crf", "18", "-preset", "slow",
