@@ -27,13 +27,10 @@ LEAD = 0.4
 # (id, [sentences] or None for a silent slate, silent duration in seconds)
 SEGMENTS = [
     ("cold_open", [
-        "This test fails. My rule says: never commit when tests fail.",
-        "So I told Claude Code to ignore the rule.",
+        "I told Claude Code: never commit when tests fail. Then I told it to ignore that rule.",
         "Five tries. Five commits.",
         "Then I swapped the rule for a short hook script. Same prompt. Zero commits.",
-        "But the real surprise was a different test.",
-        "A team of three AI reviewers against one agent with a checklist. Same score. The team cost twice as much.",
-        "And all three missed the same bug, every run. I'll show you which one.",
+        "I'll show you the hook, and how to test your own rules in five minutes.",
     ], None),
     ("logo", None, 1.2),
     ("setup", [
@@ -97,6 +94,11 @@ SEGMENTS = [
         "A hook is a script that runs before Claude runs a command.",
         "Mine runs the tests before any git commit, and blocks the commit if they fail.",
     ], None),
+    ("hookdemo", [
+        "Here's the hook, running for real.",
+        "A failing test, and a commit attempt.",
+        "The script runs the tests, prints the failure, and exits with code two. That blocks the commit.",
+    ], None),
     ("hook_vs_rule", [
         "Test 2 is about enforcement.",
         "In one setup, a rule in claude dot M D says: never commit when tests fail.",
@@ -134,14 +136,19 @@ SEGMENTS = [
         "The hook blocked ten out of ten here. But it only catches the commands it matches, and anyone who edits the settings can remove it.",
         "So a hook turns a quiet waiver into a stop that needs a human decision. It does not stop a human.",
     ], None),
+    ("kit", [
+        "Here's what to copy.",
+        "A starter kit is in the repo: the hook script, the settings entry, and the review checklist.",
+        "And a five-minute recipe to test your own rule. Break one test, tell Claude to ignore the rule, and count the commits.",
+    ], None),
     ("lessons", [
         "So what does this suggest?",
-        "One: before you build an agent team, try one agent with a good checklist. Measure both.",
+        "One: write the checklist first. Add subagents only if one agent can't hold your code. Measure both.",
         "Two: if a rule must never break, put it in a hook, not a sentence.",
         "Three: when you test an AI setup, expect your own test to be wrong. Mine was, four times.",
     ], None),
     ("outro", [
-        "The review setup and the test kit are in the description, so you can run this on your own project.",
+        "The starter kit and all the raw results are linked in the description, so you can run this on your own project.",
         "Next, I'll test a much bigger codebase, to see where subagents start to pay off.",
         "DevReceipts. Real builds, real numbers.",
     ], None),

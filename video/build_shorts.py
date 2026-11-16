@@ -15,7 +15,7 @@ FONT = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
 
 # (file name, segment id, first sentence index, last sentence index, hook line, small line)
 CLIPS = [
-    ("short1-ignore-the-rule", "cold_open", 0, 3, "I told Claude Code|to ignore my rule", "5 of 5 commits, then a hook gave 0"),
+    ("short1-ignore-the-rule", "cold_open", 0, 2, "I told Claude Code|to ignore my rule", "5 of 5 commits, then a hook gave 0"),
     ("short2-rule-vs-hook", "res_hook", 0, 4, "CLAUDE.md rule|vs hook", "same prompt, 5 tries each"),
     ("short3-bug-all-missed", "miss", 0, 2, "The bug 3 AI reviewers|all missed", "9 runs out of 9"),
 ]

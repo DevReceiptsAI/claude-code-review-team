@@ -60,8 +60,8 @@ def stamps_group(items):
 CHAPTERS = {"cold_open": 1, "logo": 1,
             "setup": 2, "bug": 2, "decoy": 2,
             "tools1": 3, "arms": 3, "fair": 3, "res_bugs": 3, "res_cost": 3, "miss": 3,
-            "hookexp": 4, "hook_vs_rule": 4, "res_hook": 4, "replay": 4,
-            "broke": 5, "limits": 5, "lessons": 5, "outro": 5}
+            "hookexp": 4, "hookdemo": 4, "hook_vs_rule": 4, "res_hook": 4, "replay": 4,
+            "broke": 5, "limits": 5, "kit": 5, "lessons": 5, "outro": 5}
 CHAPTER_NAMES = {1: "THE RESULT", 2: "THE TEST APP", 3: "TEST 1: REVIEWERS", 4: "TEST 2: RULE VS HOOK", 5: "WRAP-UP"}
 N_CHAPTERS = 5
 BAR_W = 12.4
@@ -82,9 +82,9 @@ class ArchitectureScene(Scene):
         steps = [("cold_open", self.step_cold_open), ("logo", self.step_logo), ("setup", self.step_setup),
                  ("bug", self.step_bug), ("decoy", self.step_decoy), ("tools1", self.step_tools1),
                  ("arms", self.step_arms), ("fair", self.step_fair), ("res_bugs", self.step_res_bugs),
-                 ("res_cost", self.step_res_cost), ("miss", self.step_miss), ("hookexp", self.step_hookexp),
+                 ("res_cost", self.step_res_cost), ("miss", self.step_miss), ("hookexp", self.step_hookexp), ("hookdemo", self.step_hookdemo),
                  ("hook_vs_rule", self.step_hook_vs_rule), ("res_hook", self.step_res_hook),
-                 ("replay", self.step_replay), ("broke", self.step_broke), ("limits", self.step_limits),
+                 ("replay", self.step_replay), ("broke", self.step_broke), ("limits", self.step_limits), ("kit", self.step_kit),
                  ("lessons", self.step_lessons), ("outro", self.step_outro)]
         for seg_id, step in steps:
             self.set_chapter(CHAPTERS[seg_id])
@@ -550,7 +550,7 @@ class ArchitectureScene(Scene):
         self.at("lessons", 0)
         head = Text("What it suggests", font=SANS, font_size=50, weight=BOLD, color=CYAN).move_to(UP * 3.0)
         self.play(FadeIn(head, shift=DOWN * 0.2), run_time=0.6)
-        texts = ["try one agent with a\ngood checklist before\nbuilding a team.\nMeasure both.",
+        texts = ["write the checklist\nfirst. Add subagents\nonly if one agent can't\nhold your code.",
                  "if a rule must never\nbreak, put it in a\nhook, not a sentence.",
                  "expect your own test\nto be wrong.\nMine was, four times."]
         colors = (CYAN, VIOLET, YELLOW)
@@ -598,10 +598,10 @@ class ArchitectureScene(Scene):
         self.play(AddTextLetterByLetter(rule, time_per_char=0.018))
         box = SurroundingRectangle(rule, color=CYAN, buff=0.12, stroke_width=3)
         self.play(Create(box), run_time=0.3)
-        self.at("cold_open", 1)
+        self.at("cold_open", 0, 0.5)
         ask = Text("> I'm overriding the rule: commit anyway.", font=MONO, font_size=26, color=CYAN).next_to(rule, DOWN, buff=0.5, aligned_edge=LEFT)
         self.play(AddTextLetterByLetter(ask, time_per_char=0.022))
-        self.at("cold_open", 2)
+        self.at("cold_open", 1)
         old = VGroup(term, lights, l1, l2, rule, box, ask)
         recs = [self.mini_receipt(-4.4 + i * 2.2, 0.9) for i in range(5)]
         stamps = [self.stamp("COMMITTED", YELLOW, 20).move_to(r.get_center() + DOWN * 0.1) for r in recs]
@@ -612,7 +612,7 @@ class ArchitectureScene(Scene):
         self.sfx("pop")
         self.play(LaggedStart(*[self.pop(r) for r in recs], lag_ratio=0.1), run_time=0.8)
         self.play(LaggedStart(*[GrowFromCenter(s) for s in stamps], lag_ratio=0.1), FadeIn(counter), FadeIn(quote), run_time=0.8)
-        self.at("cold_open", 3)
+        self.at("cold_open", 2)
         gate = self.box("hook script: runs the tests first", 7.0, 0.8, YELLOW, fs=24).move_to(UP * 2.9)
         stamps2 = [self.stamp("BLOCKED", GREEN, 20).move_to(r.get_center() + DOWN * 0.1) for r in recs]
         counter2 = Text("0 / 5", font=SANS, font_size=110, weight=BOLD, color=GREEN).move_to(DOWN * 1.35)
@@ -622,35 +622,12 @@ class ArchitectureScene(Scene):
         self.play(self.pop(gate), run_time=0.4)
         self.play(LaggedStart(*[GrowFromCenter(s) for s in stamps2], lag_ratio=0.1), FadeIn(counter2), FadeIn(quote2), run_time=0.8)
         self.play(self.flash(gate.get_center(), YELLOW, 1.0))
-        self.at("cold_open", 4)
+        self.at("cold_open", 3)
         self.play(*[FadeOut(m) for m in self.mobjects if m not in self.persist], run_time=0.4)
-        self.at("cold_open", 5)
-
-        def card(x, label, color, price):
-            frame = RoundedRectangle(corner_radius=0.2, width=5.6, height=3.4, stroke_color=color, stroke_width=4,
-                                     fill_color=PANEL, fill_opacity=1).move_to([x, 0.3, 0])
-            lab = Text(label, font=MONO, font_size=24, color=MUTED).move_to([x, 1.55, 0])
-            big = Text("9/10", font=SANS, font_size=110, weight=BOLD, color=GREEN).move_to([x, 0.5, 0])
-            pr = Text(price, font=MONO, font_size=30, color=YELLOW).move_to([x, -0.85, 0])
-            return VGroup(frame, lab, big, pr)
-
-        c1 = card(-3.3, "1 agent + checklist", CYAN, "$0.10 est.")
-        c2 = card(3.3, "team of 3 subagents", VIOLET, "$0.21 est.")
-        self.pop_in(c1, c2, lag=0.3, run_time=1.0)
-        self.at("cold_open", 5, 0.62)
-        note = Text("same score.  2.2x the cost.", font=MONO, font_size=30, color=YELLOW).move_to(DOWN * 2.2)
-        self.play(FadeIn(note, shift=UP * 0.15), run_time=0.7)
-        self.at("cold_open", 6)
-        self.play(FadeOut(c1), FadeOut(c2), FadeOut(note), run_time=0.3)
-        panel = RoundedRectangle(corner_radius=0.2, width=9.6, height=1.9, stroke_color=INDIGO, stroke_width=3,
-                                 fill_color=PANEL, fill_opacity=1).move_to(UP * 0.8)
-        code = Text("item = get_item(conn, sku)", font=MONO, font_size=40, color=LIGHT).move_to(panel)
-        code.set_opacity(0.35)
-        q = Text("one line. all 3 reviewers walked past it.", font=MONO, font_size=28, color=YELLOW).move_to(DOWN * 1.2)
-        q2 = Text("9 runs out of 9", font=MONO, font_size=28, color=MUTED).move_to(DOWN * 1.9)
-        self.play(self.pop(panel), FadeIn(code), run_time=0.6)
-        self.play(Indicate(code, color=YELLOW, scale_factor=1.08), self.flash(panel.get_center(), YELLOW, 1.2), FadeIn(q), run_time=0.9)
-        self.play(FadeIn(q2), run_time=0.5)
+        kit = self.box("the hook script\n+ a 5-minute test for your own rules", 9.8, 1.9, CYAN, fs=30).move_to(UP * 0.3)
+        sub = Text("same prompt. same failing test.", font=MONO, font_size=24, color=MUTED).move_to(DOWN * 1.4)
+        self.pop_in(kit, run_time=0.7)
+        self.play(FadeIn(sub, shift=UP * 0.15), run_time=0.6)
 
     def step_logo(self):
         brand = Text("DevReceipts", font=MONO, font_size=84, weight=BOLD, t2c={"Receipts": CYAN}).shift(UP * 0.4)
@@ -683,6 +660,53 @@ class ArchitectureScene(Scene):
         self.sfx("pop")
         self.play(LaggedStart(*[AnimationGroup(GrowArrow(a), self.pop(h)) for a, h in zip(arrows, hs)], lag_ratio=0.3), run_time=1.4)
         self.play(*[self.fire(VIOLET, a.get_start(), a.get_end(), 0.7) for a in arrows])
+
+    # ---- real output of the hook script (captured from a real run of demo-app/.claude/hooks/block-commit.sh) ------
+    def step_hookdemo(self):
+        self.at("hookdemo", 0)
+        head = self.head("The hook, running for real", CYAN)
+        panel = RoundedRectangle(corner_radius=0.18, width=11.8, height=5.0, stroke_color=INDIGO, stroke_width=3,
+                                 fill_color=PANEL, fill_opacity=1).move_to(DOWN * 0.45)
+        note = Text("real output of block-commit.sh (separator line trimmed)", font=MONO, font_size=18, color=MUTED).next_to(panel, DOWN, buff=0.12)
+        self.play(FadeIn(head, shift=DOWN * 0.2), self.pop(panel), FadeIn(note), run_time=0.8)
+        raw = (HERE.parent / "eval" / "results" / "hook-demo-output.txt").read_text().splitlines()
+        body = [l for l in raw[1:] if not l.startswith("====") and not l.startswith("exit code")]
+        code = raw[-1]
+        self.at("hookdemo", 1)
+        cmd = self.code_line("$ git commit -m wip      (the hook runs first)", -5.4, 1.55, CYAN, 22)
+        self.play(AddTextLetterByLetter(cmd, time_per_char=0.02))
+        self.at("hookdemo", 2)
+        out = Text("\n".join(body), font=MONO, font_size=20, color=LIGHT, line_spacing=0.9)
+        out.move_to(np.array([-5.4, 1.05, 0]), aligned_edge=UL)
+        self.sfx("pop")
+        self.play(AddTextLetterByLetter(out, time_per_char=0.006))
+        ec = Text(code, font=MONO, font_size=28, weight=BOLD, color=YELLOW).move_to(np.array([-5.4, -2.65, 0]), aligned_edge=LEFT)
+        self.play(FadeIn(ec), self.flash(ec.get_center(), YELLOW, 0.8), Create(SurroundingRectangle(ec, color=YELLOW, buff=0.1, stroke_width=3)))
+
+    # ---- the starter kit -----------------------------------------------------------------------------------------------------------
+    def step_kit(self):
+        self.at("kit", 0)
+        head = self.head("Copy this", CYAN)
+        self.play(FadeIn(head, shift=DOWN * 0.2), run_time=0.6)
+        self.at("kit", 1)
+        specs = [("hooks/\nblock-commit.sh", "blocks a commit\nwhen tests fail", CYAN),
+                 ("settings.snippet\n.json", "turns the hook on", VIOLET),
+                 ("skills/review/\nSKILL.md", "the review checklist", TEAL)]
+        cards = VGroup()
+        for i, (name, what, col) in enumerate(specs):
+            x = -4.6 + i * 4.6
+            frame = RoundedRectangle(corner_radius=0.18, width=4.1, height=2.6, stroke_color=col, stroke_width=3,
+                                     fill_color=PANEL, fill_opacity=1).move_to([x, 0.9, 0])
+            t1 = Text(name, font=MONO, font_size=24, weight=BOLD, color=col, line_spacing=0.85).move_to([x, 1.35, 0])
+            t2 = Text(what, font=MONO, font_size=20, color=LIGHT, line_spacing=0.85).move_to([x, 0.3, 0])
+            cards.add(VGroup(frame, t1, t2))
+        self.pop_in(*cards, lag=0.2, run_time=1.2)
+        self.at("kit", 2)
+        rec = RoundedRectangle(corner_radius=0.18, width=12.2, height=1.9, stroke_color=YELLOW, stroke_width=3,
+                               fill_color=PANEL, fill_opacity=1).move_to(DOWN * 1.9)
+        r1 = Text("test-your-rule.md  (5 minutes, your own numbers)", font=MONO, font_size=24, weight=BOLD, color=YELLOW).move_to(DOWN * 1.45)
+        r2 = Text("1 break one test   2 say: ignore the rule   3 count the commits", font=MONO, font_size=22, color=LIGHT).move_to(DOWN * 2.3)
+        self.pop_in(VGroup(rec, r1, r2), run_time=0.8)
 
     # ---- the bug all three reviewers missed -------------------------------------------------------------------------------
     def step_miss(self):

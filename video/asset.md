@@ -1,4 +1,6 @@
-# Asset: "Claude Code Review Team" starter pack
+# Asset: "Claude Code Review Team" starter kit
+
+**Status (16 Nov): built as `starter-kit/` in the repo** (hook with configurable test command, settings snippet, review skill + agents, `test-your-rule.md`). The notes below are the original plan.
 
 The one thing that comes out of this video for viewers to take away.
 

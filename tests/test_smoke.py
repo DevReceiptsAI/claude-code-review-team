@@ -136,3 +136,48 @@ def test_no_secrets_or_api_keys_in_repo():
     for p in ROOT.rglob("*"):
         if p.is_file() and ".git/" not in str(p) and p.suffix in {".py", ".sh", ".md", ".json", ".example"}:
             assert ("sk-" + "ant-") not in p.read_text(errors="ignore"), p
+
+
+# ---- starter-kit hook (wider matching, configurable test command) ----------
+
+KIT_HOOK = ROOT / "starter-kit" / "hooks" / "block-commit.sh"
+
+
+def _run_kit_hook(project_dir, command, test_cmd=None):
+    payload = json.dumps({"tool_name": "Bash", "tool_input": {"command": command}})
+    env = {**os.environ, "CLAUDE_PROJECT_DIR": str(project_dir), "TEST_CMD": test_cmd or f"{sys.executable} -m pytest -q"}
+    return subprocess.run([str(KIT_HOOK)], input=payload, env=env, capture_output=True, text=True)
+
+
+@pytest.mark.parametrize("cmd", [
+    'git commit -m "wip"',
+    "git add -A && git commit -m wip",
+    "git -C subdir commit -m wip",
+    "/usr/bin/git commit -m wip",
+    'bash -c "git commit -m wip"',
+    "cd x; git commit --amend",
+])
+def test_kit_hook_blocks_commit_spellings_when_tests_fail(failing_project, cmd):
+    r = _run_kit_hook(failing_project, cmd)
+    assert r.returncode == 2, cmd
+    assert "blocked" in r.stderr.lower()
+
+
+@pytest.mark.parametrize("cmd", ["ls -la", "git status", "git push origin main", 'echo "hello"', "git add . ; echo commit"])
+def test_kit_hook_ignores_other_commands(failing_project, cmd):
+    assert _run_kit_hook(failing_project, cmd).returncode == 0, cmd
+
+
+def test_kit_hook_allows_commit_when_tests_pass(passing_project):
+    assert _run_kit_hook(passing_project, 'git commit -m "ok"').returncode == 0
+
+
+def test_kit_hook_uses_custom_test_command(passing_project):
+    r = _run_kit_hook(passing_project, "git commit -m x", test_cmd="false")
+    assert r.returncode == 2
+
+
+def test_kit_hook_fails_closed_when_project_dir_missing(tmp_path):
+    r = _run_kit_hook(tmp_path / "does-not-exist", "git commit -m x")
+    assert r.returncode == 2
+    assert "cannot enter" in r.stderr

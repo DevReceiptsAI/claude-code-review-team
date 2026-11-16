@@ -14,7 +14,7 @@ cmd=$(printf '%s' "$input" | jq -r '.tool_input.command // empty')
 # Matches `git commit` at the start of the command or after ; & |
 # so `git add . && git commit -m x` is caught too.
 if printf '%s' "$cmd" | grep -Eq '(^|[;&|])[[:space:]]*git[[:space:]]+commit'; then
-  cd "${CLAUDE_PROJECT_DIR:-.}" || exit 0
+  cd "${CLAUDE_PROJECT_DIR:-.}" || { echo "block-commit.sh: cannot enter project dir; blocking." >&2; exit 2; }
   if ! output=$(python3 -m pytest -q 2>&1); then
     {
       echo "Commit blocked by hook: the test suite is failing."

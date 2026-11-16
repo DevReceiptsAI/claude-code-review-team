@@ -101,3 +101,11 @@ Open question for the video: if the checklist-only arm matches the team at a low
 - Layout: chapter label overlapped the app title (panel moved down). The "stray dash" at 0:03 and the 2-arrow tools diagram turned out to be mid-animation frames, not bugs.
 - Encoding: re-encoded at crf 16, 48 kHz stereo AAC; captions split to at most 2 lines of about 42 characters; 7 s quiet tail with the cards cleared for YouTube end-screen elements.
 - Voice speed set to 1.05 (was 1.0) and setup lines tightened: the first Test 1 result now arrives at about 1:55 instead of 2:11. Still not heard by me.
+
+## Video #1 v4: making it useful (16 Nov)
+- A third review (Opus subagent, model output) said: ship Video #1 after small fixes, move the bigger-codebase test to Video #2, and add something viewers can copy. Reasons for deferring the bigger test: about $4-5 of API-price estimate (roughly one 5-hour session of plan allowance), planted bugs could not be verified against the library's tests this session, and the model may remember the library (diskcache), which would flatter every arm.
+- Added: `starter-kit/` (hook with a configurable test command, wider command matching and fail-closed behaviour, settings snippet, review skill and agents, `test-your-rule.md`); 14 more smoke tests (30 pass, no model calls); a real captured run of the hook script (`eval/results/hook-demo-output.txt`) shown in the video; a "Copy this" segment; the opening rewritten as one story (rule 5/5, hook 0/5) with the team result left for Test 1. The first Test 1 number now arrives at about 1:44.
+- The kit's hook is NOT the one the Claude runs used. It was checked by smoke tests only. The video's Claude results come from `demo-app/.claude/hooks/block-commit.sh` (matching logic unchanged; only the fail-closed branches were added).
+- Why the third pass found things earlier passes did not: each earlier pass checked claims and layout, none asked "what can a viewer copy?".
+- Blocked: a permission check refused running the third-party `diskcache` test suite, so the bigger-codebase test was not started. `eval/big/` is local only and git-ignored.
+- Shorts built with `build_shorts.py` (letterboxed 16:9 on a vertical canvas, captions via drawtext because this ffmpeg's `subtitles` filter rendered nothing).

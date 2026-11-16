@@ -13,16 +13,16 @@ I told Claude Code never to commit when tests fail. Then I told it to ignore tha
 
 Every number on screen came from a real run. Narrated with an AI voice.
 
-Code, test kit and raw results: https://github.com/DevReceiptsAI/claude-code-review-team
+Copy-paste starter kit (hook + review checklist + 5-minute test recipe), code and raw results: https://github.com/DevReceiptsAI/claude-code-review-team
 
 Chapters
 0:00 The result
-0:29 The test app: 10 planted bugs and 3 decoys
-1:10 Test 1: plain prompt vs checklist vs agent team
-2:37 The bug all three missed
-2:51 Test 2: CLAUDE.md rule vs hook
+0:18 The test app: 10 planted bugs and 3 decoys
+1:00 Test 1: plain prompt vs checklist vs agent team
+2:26 The bug all three missed
+2:40 Test 2: CLAUDE.md rule vs hook
 4:03 What broke
-5:13 What it suggests
+5:12 Copy this: the starter kit
 
 Results in one line each
 - Plain prompt: 7, 6, 7 of 10 planted bugs (about $0.07, 13 s per run)
@@ -44,14 +44,14 @@ DevReceipts: real builds, real numbers.
 claude code, claude code hooks, claude code subagents, claude code skills, claude.md, ai agents, ai coding, agent evals, llm evaluation, code review ai
 
 ## Pinned comment (post it right after publishing)
-Everything is reproducible: the repo has the demo app, the answer key, the scripts and the raw results. Biggest caveat: one small app and a few runs per setup. What should I test next: a much bigger codebase, a different model, or something else? Fair criticism up front: the rule only gave way when I told it to, and the bug all three missed is low-impact on a local database.
+Everything is reproducible: the repo has the demo app, the answer key, the scripts and the raw results. Biggest caveat: one small app and a few runs per setup. Next video: does a team of agents win on a much bigger (5,000-line) codebase? What else should I test: a different model, or something else? Fair criticism up front: the rule only gave way when I told it to, and the bug all three missed is low-impact on a local database.
 
 ## Playlist
 Add to "Agents: Real Builds".
 
 ## Settings checklist
 - [ ] AI-voice disclosure answered honestly in Studio (check YouTube's current guidance; a plain synthetic narrator over truthful on-screen content is generally described as not needing the realistic-content label, but verify)
-- [ ] Captions: upload `DevReceipts-Video1-FINAL-v3.srt` as normal captions (do not burn in)
+- [ ] Captions: upload `DevReceipts-Video1-FINAL-v4.srt` as normal captions (do not burn in)
 - [ ] Video watermark: set to the entire video
 - [ ] End screen (last 5-20 seconds): add the playlist and a subscribe element. The outro already leaves room
 - [ ] Visibility: schedule or publish when you can answer comments in the first hours

@@ -17,3 +17,5 @@ video/*_v2.py
 video/*_v3.py
 video/archive/
 video/*_backup.py
+# Video #2 work in progress (third-party diskcache copy; keep out of the Video #1 push)
+eval/big/

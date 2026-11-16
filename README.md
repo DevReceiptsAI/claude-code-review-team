@@ -2,6 +2,8 @@
 
 A small, reproducible experiment from the [DevReceipts](https://www.youtube.com/@DevReceiptsAi) channel. A demo app with **10 planted bugs and 3 decoys** is reviewed three ways, and a separate test checks whether a **CLAUDE.md rule** or a **hook** stops bad commits. Everything runs inside Claude Code on a plan login: no API key, no paid services, no agent frameworks.
 
+> **Take-away: [`starter-kit/`](starter-kit/)** (a commit hook that blocks when tests fail, the review checklist, and a 5-minute recipe to test your own rule).
+>
 > Video: _link added at upload_ &nbsp;|&nbsp; Full numbers and caveats: [`METRICS.md`](METRICS.md) &nbsp;|&nbsp; What went wrong along the way: [`NOTES.md`](NOTES.md)
 
 ## Results (real runs, Sonnet, medium effort)
@@ -40,6 +42,7 @@ When told outright to ignore the rule, Claude did, and said it skipped the tests
 ## What's inside
 | Path | What it is |
 |---|---|
+| `starter-kit/` | The part to copy into your own project: hook script (configurable test command), settings snippet, review skill and agents, `test-your-rule.md`. Checked with smoke tests, no model calls |
 | `demo-app/` | About 300 lines of Python (shop app + tests). All tests pass as shipped. Contains deliberate bugs: **do not copy it into real projects** |
 | `demo-app/.claude/skills/review/` | The review skill: starts three subagents and merges their findings |
 | `demo-app/.claude/agents/` | `bug-hunter`, `security-reviewer`, `test-reviewer` (read-only tools) |
