@@ -109,3 +109,6 @@ Open question for the video: if the checklist-only arm matches the team at a low
 - Why the third pass found things earlier passes did not: each earlier pass checked claims and layout, none asked "what can a viewer copy?".
 - Blocked: a permission check refused running the third-party `diskcache` test suite, so the bigger-codebase test was not started. `eval/big/` is local only and git-ignored.
 - Shorts built with `build_shorts.py` (letterboxed 16:9 on a vertical canvas, captions via drawtext because this ffmpeg's `subtitles` filter rendered nothing).
+
+## v5 (16 Nov)
+- Shortened "what broke" (40 s to 34 s), faster typing in the opening, one logo in the outro (footer fades out), thumbnail A now has a large CLAUDE CODE line. Chapters regenerated from timings.

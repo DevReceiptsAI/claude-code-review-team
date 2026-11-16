@@ -122,11 +122,11 @@ SEGMENTS = [
     ], None),
     ("broke", [
         "Now, what broke.",
-        "My first hook test was wrong. Claude couldn't run the tests because of a permission mismatch, so it refused to commit for the wrong reason. I fixed it and ran it again.",
-        "My decoys weren't clean. The reviewers flagged real problems I hadn't planted, like negative prices printing wrong.",
-        "Many of the extra findings were real flaws in my own demo app. The password salt was the username. Tokens never expired.",
-        "The tool's own timer said the team took about ten seconds. The real time was about thirty. It leaves out the subagents.",
-        "And my first comparison was unfair. The plain prompt never mentioned tests. That's why there's a checklist agent.",
+        "My first hook test was invalid. A permission mismatch meant Claude couldn't run the tests, so it refused for the wrong reason. I fixed it and reran.",
+        "My decoys weren't clean. Reviewers flagged real problems I hadn't planted.",
+        "Many extra findings were real flaws in my own app. The password salt was the username. Tokens never expired.",
+        "The tool's timer said the team took ten seconds. The real time was thirty. It skips the subagents.",
+        "And my first baseline was unfair. It never mentioned tests, so I added the checklist agent.",
     ], None),
     ("limits", [
         "What this doesn't prove.",

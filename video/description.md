@@ -22,7 +22,7 @@ Chapters
 2:26 The bug all three missed
 2:40 Test 2: CLAUDE.md rule vs hook
 4:03 What broke
-5:12 Copy this: the starter kit
+5:06 Copy this: the starter kit
 
 Results in one line each
 - Plain prompt: 7, 6, 7 of 10 planted bugs (about $0.07, 13 s per run)
@@ -51,7 +51,7 @@ Add to "Agents: Real Builds".
 
 ## Settings checklist
 - [ ] AI-voice disclosure answered honestly in Studio (check YouTube's current guidance; a plain synthetic narrator over truthful on-screen content is generally described as not needing the realistic-content label, but verify)
-- [ ] Captions: upload `DevReceipts-Video1-FINAL-v4.srt` as normal captions (do not burn in)
+- [ ] Captions: upload `DevReceipts-Video1-FINAL-v5.srt` as normal captions (do not burn in)
 - [ ] Video watermark: set to the entire video
 - [ ] End screen (last 5-20 seconds): add the playlist and a subscribe element. The outro already leaves room
 - [ ] Visibility: schedule or publish when you can answer comments in the first hours
