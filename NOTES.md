@@ -80,7 +80,7 @@ Open question for the video: if the checklist-only arm matches the team at a low
 - The first layout pass had text running off cards and off the paper in the receipt, cost labels clipped at the right edge, and captions touching the footer. Why: widths guessed from character counts; fixed by measuring frames and shrinking or shortening.
 - Thumbnails: first versions had the headline under the cards (B), the stamp hiding the command (C) and the headline touching the receipt (A). Fixed and checked at 168 px wide.
 - Length is 6:25, shorter than the 12-16 minute plan. Reason: with the narration trimmed to real content there was nothing to cut in without padding. Padding hurts retention; the "bigger codebase" test is better as Video #2.
-- Before publishing results to GitHub: removed `credential_expires_at`, `session_id` and `uuid` from every results JSON; verified no names, emails or home paths remain.
+- Before publishing results to GitHub: removed the account, session and id fields the CLI adds from every results JSON; verified no names, emails or home paths remain.
 
 ## Re-edit after the Opus review (14 Nov)
 - Independent review (an Opus subagent) said: demand exists but the headline result is the expected one, the 2.5-minute explainer was the biggest retention risk, the visuals read as a slide deck, and the title gave away the outcome. Its demand figures (300-3K views for a new channel) are an unverified estimate.
