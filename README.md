@@ -4,7 +4,7 @@ A small, reproducible experiment from the [DevReceipts](https://www.youtube.com/
 
 > **Take-away: [`starter-kit/`](starter-kit/)** (a commit hook that blocks when tests fail, the review checklist, and a 5-minute recipe to test your own rule).
 >
-> Video: _link added at upload_ &nbsp;|&nbsp; Full numbers and caveats: [`METRICS.md`](METRICS.md) &nbsp;|&nbsp; What went wrong along the way: [`NOTES.md`](NOTES.md)
+> Video: [I Told Claude Code to Ignore My Rule. A Hook Didn't Let It.](https://youtu.be/6A9dQ1DCUyM) &nbsp;|&nbsp; Full numbers and caveats: [`METRICS.md`](METRICS.md) &nbsp;|&nbsp; What went wrong along the way: [`NOTES.md`](NOTES.md)
 
 ## Results (real runs, Sonnet, medium effort)
 
